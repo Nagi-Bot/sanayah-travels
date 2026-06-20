@@ -29,7 +29,13 @@ app.use('/api/pages', require('../server/routes/pages'));
 app.use('/api/chatbot', require('../server/routes/chatbot'));
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: Date.now(), db: !!global.dbConnected });
+  res.json({
+    status: 'ok',
+    timestamp: Date.now(),
+    db: !!global.dbConnected,
+    hasMongoUri: !!process.env.MONGODB_URI,
+    mongoPrefix: (process.env.MONGODB_URI || '').substring(0, 20)
+  });
 });
 
 // Connect to MongoDB (async, won't block)
@@ -40,6 +46,8 @@ if (process.env.MONGODB_URI) {
   })
     .then(() => { global.dbConnected = true; console.log('MongoDB connected'); })
     .catch(err => { console.error('MongoDB error:', err.message); global.dbConnected = false; });
+} else {
+  console.log('MONGODB_URI not set');
 }
 
 module.exports = app;
