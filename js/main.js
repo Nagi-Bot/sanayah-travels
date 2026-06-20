@@ -472,6 +472,11 @@ function initDynamicContent() {
     sc.content = seo.sc_verify.replace(/<[^>]*>/g,'').replace(/content="([^"]*)"/,'$1').trim();
   }
 
+  // Favicon
+  var favicon = localStorage.getItem('sanayah_favicon');
+  var favLink = document.getElementById('favicon-link');
+  if (favicon && favLink) { favLink.href = favicon; } else if (favLink) { favLink.href = ''; }
+
   // Logo
   var logo = getSiteLogo();
   var logoEls = document.querySelectorAll('.logo-wrap svg, .logo-wrap img');

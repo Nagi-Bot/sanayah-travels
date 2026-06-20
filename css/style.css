@@ -670,7 +670,7 @@ footer { background: var(--sky-dark); padding: 60px 40px 32px; }
 
   .brand-strip { padding: 10px 0; }
   .brand-strip-inner { gap: 16px; }
-  .brand-strip-inner span img { height: 40px; max-width: 100px; }
+  .brand-strip-inner span img { height: 50px; max-width: 130px; }
 
   .map-embed { height: 200px; }
 
@@ -711,7 +711,7 @@ footer { background: var(--sky-dark); padding: 60px 40px 32px; }
   .contact-form-card { padding: 16px 12px; }
   .contact-form-card h3 { font-size: 20px; }
   .form-group input, .form-group select, .form-group textarea { padding: 10px 12px; font-size: 13px; }
-  .brand-strip-inner span img { height: 32px; max-width: 80px; }
+  .brand-strip-inner span img { height: 42px; max-width: 110px; }
 }
 
 @media (max-width: 360px) {
@@ -721,7 +721,7 @@ footer { background: var(--sky-dark); padding: 60px 40px 32px; }
   .visa-countries { grid-template-columns: 1fr 1fr; gap: 6px; }
   .topbar { font-size: 9.5px; }
   .topbar span { font-size: 9.5px; }
-  .brand-strip-inner span img { height: 28px; max-width: 70px; }
+  .brand-strip-inner span img { height: 36px; max-width: 90px; }
   .services-grid { gap: 8px; }
   .service-card { padding: 14px 10px; }
   .service-icon { width: 40px; height: 40px; font-size: 20px; }

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Admin Panel | Sanayah Travels</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"><style>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Admin Panel | Sanayah Travels</title><link id="favicon-link" rel="icon"><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"><style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--sky:#1E90D8;--sky-dark:#0C6BAD;--white:#fff;--off-white:#F4FAFF;--gray-300:#D1D1D1;--gray-500:#888;--gray-800:#222;--font-d:'Playfair Display',Georgia,serif;--font-b:'Inter',sans-serif}
 .admin-app{min-height:100vh;background:#0f172a;font-family:var(--font-b);color:#cbd5e1}
@@ -233,6 +233,15 @@ textarea.m-input{min-height:75px;resize:vertical}
           <div><div class="img-upload-area" style="max-width:260px;padding:16px"><input type="file" accept="image/*" onchange="adminUploadIata(this)"/><p>Click to upload IATA logo</p></div></div>
         </div>
         <button onclick="adminRemoveIata()" style="background:transparent;color:#f87171;border:1px solid rgba(239,68,68,.3);padding:7px 16px;border-radius:8px;cursor:pointer;font-size:.8rem">Remove IATA Logo</button>
+      </div>
+      <div class="settings-card">
+        <h3>Favicon</h3>
+        <p>Small icon displayed in browser tabs. Upload a square image (32x32 or 16x16 recommended).</p>
+        <div class="logo-preview-wrap">
+          <div class="logo-preview-box" id="faviconPreviewBox"><span style="color:#64748b;font-size:.75rem">No favicon</span></div>
+          <div><div class="img-upload-area" style="max-width:260px;padding:16px"><input type="file" accept="image/*" onchange="adminUploadFavicon(this)"/><p>Click to upload favicon</p></div></div>
+        </div>
+        <button onclick="adminRemoveFavicon()" style="background:transparent;color:#f87171;border:1px solid rgba(239,68,68,.3);padding:7px 16px;border-radius:8px;cursor:pointer;font-size:.8rem">Remove Favicon</button>
       </div>
       <div class="settings-card">
         <h3>Accent Color</h3>

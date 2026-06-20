@@ -329,6 +329,9 @@ function loadBranding(){
   g('brandHeroSub').value=lsGet('sanayah_hero_sub','')||'';
   const color=lsGet('sanayah_accent','#1E90D8');
   g('brandColor').value=color;g('brandColorHex').value=color;
+  const fav=lsGet('sanayah_favicon','');
+  const fbox=g('faviconPreviewBox');
+  if(fav){fbox.innerHTML=`<img src="${fav}" alt="Favicon" style="max-width:32px;max-height:32px" onerror="this.style.display='none'"/>`;}else fbox.innerHTML='<span style="color:#64748b;font-size:.75rem">No favicon</span>';
 }
 function updateSocialPreview(){
   const map={facebook:'socFb',instagram:'socIg',twitter:'socTw',linkedin:'socLi',youtube:'socYt',tiktok:'socTk'};
@@ -410,6 +413,21 @@ window.adminRemoveIata=function(){
   localStorage.removeItem('sanayah_iata');
   g('iataPreviewBox').innerHTML='<span style="color:#64748b;font-size:.75rem">No logo</span>';
   showToast('IATA logo removed');
+};
+window.adminUploadFavicon=function(inp){
+  const file=inp.files&&inp.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=function(e){
+    const url=e.target.result;lsSet('sanayah_favicon',url);
+    const box=g('faviconPreviewBox');box.innerHTML=`<img src="${url}" alt="Favicon" style="max-width:32px;max-height:32px" />`;
+    showToast('Favicon updated');
+  };
+  r.readAsDataURL(file);
+};
+window.adminRemoveFavicon=function(){
+  localStorage.removeItem('sanayah_favicon');
+  g('faviconPreviewBox').innerHTML='<span style="color:#64748b;font-size:.75rem">No favicon</span>';
+  showToast('Favicon removed');
 };
 window.adminRemoveLogo=function(){
   localStorage.removeItem('sanayah_logo');
