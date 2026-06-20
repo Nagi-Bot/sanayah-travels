@@ -30,8 +30,21 @@ connectMongo();
 
 // DB status middleware (MUST be before routes)
 app.use((req, res, next) => {
-  req.dbConnected = !!global.dbConnected;
-  next();
+  if (mongoPromise && !global.dbConnected && !dbError) {
+    Promise.race([
+      mongoPromise,
+      new Promise(r => setTimeout(r, 4000))
+    ]).then(() => {
+      req.dbConnected = !!global.dbConnected;
+      next();
+    }).catch(() => {
+      req.dbConnected = !!global.dbConnected;
+      next();
+    });
+  } else {
+    req.dbConnected = !!global.dbConnected;
+    next();
+  }
 });
 
 // Import all route handlers
