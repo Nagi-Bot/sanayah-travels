@@ -397,7 +397,7 @@ function getBlog() { try { return JSON.parse(localStorage.getItem('sanayah_blog'
 async function syncFromBackend() {
   try {
     var r = await apiGetReviews(true); if (r && r.length) localStorage.setItem('sanayah_reviews', JSON.stringify(r));
-    var al = await apiGetAirlines(); if (al && al.length) localStorage.setItem('sanayah_airlines', JSON.stringify(al));
+    var al = await apiGetAirlines(); if (al && al.length) { al.forEach(function(a) { if (a.customId && !a.id) a.id = a.customId; if (!a.data && a.logo) a.data = a.logo; }); localStorage.setItem('sanayah_airlines', JSON.stringify(al)); refreshAirlineStrip(); }
     var b = await apiGetBlog(); if (b) localStorage.setItem('sanayah_blog', JSON.stringify(b));
     var fq = await apiGetFaq(); if (fq && fq.length) localStorage.setItem('sanayah_faq', JSON.stringify(fq));
     var qa = await apiGetQa(); if (qa && qa.length) localStorage.setItem('sanayah_qa', JSON.stringify(qa));

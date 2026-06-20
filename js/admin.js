@@ -197,7 +197,7 @@ window.deleteReview=function(i){
 // --- AIRLINES ---
 let _editAlId=null,_alDataUrl='';
 function loadAirlines(){
-  const al=lsGet('sanayah_airlines',[]);
+  const al=lsGet('sanayah_airlines',[]).map(function(a){ if (!a.id && a.customId) a.id = a.customId; return a; });
   const wrap=g('airlineList');
   if(!al.length){wrap.innerHTML='<p style="color:#64748b;padding:20px">No airlines added yet.</p>';return;}
   wrap.innerHTML=al.map(a=>{
