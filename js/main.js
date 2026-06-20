@@ -531,9 +531,9 @@ function initDynamicContent() {
   if (contact.ptcl) {
     document.querySelectorAll('[data-content="ptcl"]').forEach(function(el) { el.textContent = contact.ptcl; });
     document.querySelectorAll('a[href^="tel:"]').forEach(function(a) {
-      if (a.href.indexOf('021')>=0 || a.href.indexOf('ptcl')>=0 || a.textContent.indexOf('021')>=0) {
+      if (a.textContent.indexOf('PTCL')>=0 || a.textContent.indexOf('ptcl')>=0 || (a.href.indexOf('021')>=0 && a.textContent.indexOf('300')<0)) {
         a.href = 'tel:' + contact.ptcl.replace(/[^0-9+]/g,'');
-        a.textContent = contact.ptcl;
+        a.textContent = a.textContent.replace(/\+?92[\s\d\-]+/g, contact.ptcl);
       }
     });
   }
