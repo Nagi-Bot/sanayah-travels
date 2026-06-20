@@ -528,27 +528,24 @@ function initDynamicContent() {
   if (contact.address) {
     document.querySelectorAll('[data-content="address"]').forEach(function(el) { el.textContent = contact.address; });
   }
-  if (contact.ptcl) {
-    // Force correct PTCL
-    if (contact.ptcl.indexOf('300') >= 0 || contact.ptcl.indexOf('091') >= 0 || contact.ptcl.indexOf('92300') >= 0) {
-      contact.ptcl = '92 21 34832373';
-    }
-    document.querySelectorAll('[data-content="ptcl"]').forEach(function(el) { el.textContent = contact.ptcl; });
-    document.querySelectorAll('a[href^="tel:"]').forEach(function(a) {
-      if (a.textContent.indexOf('PTCL')>=0 || a.textContent.indexOf('ptcl')>=0 || (a.href.indexOf('021')>=0 && a.textContent.indexOf('300')<0)) {
-        a.href = 'tel:' + contact.ptcl.replace(/[^0-9+]/g,'');
-        a.textContent = a.textContent.replace(/\+?92[\s\d\-]+/g, contact.ptcl);
-      }
-    });
+  if (contact.address) {
+    document.querySelectorAll('[data-content="address"]').forEach(function(el) { el.textContent = contact.address; });
   }
-  // Also update topbar PTCL span directly (hardcoded in HTML)
-  var topbarSpans = document.querySelectorAll('.topbar span');
-  topbarSpans.forEach(function(sp) {
-    var txt = sp.textContent;
-    if (txt.indexOf('PTCL') >= 0 && contact.ptcl) {
+  // PTCL - always use this number regardless of admin settings
+  var ptclNum = '92 21 34832373';
+  document.querySelectorAll('[data-content="ptcl"]').forEach(function(el) { el.textContent = ptclNum; });
+  document.querySelectorAll('a[href^="tel:"]').forEach(function(a) {
+    if (a.textContent.indexOf('PTCL')>=0 || a.textContent.indexOf('ptcl')>=0) {
+      a.href = 'tel:' + ptclNum.replace(/[^0-9+]/g,'');
+      a.textContent = a.textContent.replace(/\+?92[\s\d\-]+/g, ptclNum);
+    }
+  });
+  // topbar PTCL span
+  document.querySelectorAll('.topbar span').forEach(function(sp) {
+    if (sp.textContent.indexOf('PTCL') >= 0) {
       var link = sp.querySelector('a');
-      if (link) { link.textContent = contact.ptcl; link.href = 'tel:' + contact.ptcl.replace(/[^0-9+]/g,''); }
-      else sp.innerHTML = sp.innerHTML.replace(/\+92[\s\d\-]+/g, contact.ptcl);
+      if (link) { link.textContent = ptclNum; link.href = 'tel:' + ptclNum.replace(/[^0-9+]/g,''); }
+      else sp.innerHTML = sp.innerHTML.replace(/\+?92[\s\d\-]+/g, ptclNum);
     }
   });
   if (contact.hours) {
