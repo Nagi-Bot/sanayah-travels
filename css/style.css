@@ -175,7 +175,7 @@ section { padding: 80px 40px; }
 
 /* SERVICES */
 .services { background: var(--off-white); }
-.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 44px; }
+.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 24px; }
 .service-card { background: white; border-radius: 14px; border: 1.5px solid var(--border); padding: 28px 24px; text-align: center; transition: all 0.25s; cursor: pointer; }
 .service-card:hover { border-color: var(--sky); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(30,144,216,0.12); }
 .service-icon { width: 60px; height: 60px; background: var(--sky-pale); border-radius: 14px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; }

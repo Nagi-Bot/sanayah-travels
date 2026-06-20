@@ -1,6 +1,6 @@
-﻿(function(){
+(function(){
 const PASS_KEY='sanayah_admin_pass';
-// ─── HELPERS ───
+// --- HELPERS ---
 function g(id){return document.getElementById(id)}
 function lsGet(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d??null}catch{return d??null}}
 function lsSet(k,v){localStorage.setItem(k,JSON.stringify(v))}
@@ -15,7 +15,7 @@ async function saveSettingAsync(key, value) {
   await apiSaveSetting(key, value);
 }
 
-// ─── DEFAULT DATA ───
+// --- DEFAULT DATA ---
 const DEFAULT_AIRLINES=[
   {id:'al1',name:'Emirates',logo:'https://upload.wikimedia.org/wikipedia/commons/d/d9/Emirates_logo.svg'},
   {id:'al2',name:'Qatar Airways',logo:'https://upload.wikimedia.org/wikipedia/commons/2/27/Qatar_Airways_Logo.svg'},
@@ -31,19 +31,19 @@ const DEFAULT_AIRLINES=[
 const DEFAULT_BLOG={posts:[],settings:{label:'Travel Blog',title:'Get Inspired',desc:'Stories, guides and tips.'}};
 const DEFAULT_FAQ=[{q:'What documents do I need for Umrah?',a:'A valid passport with 6+ months validity, Umrah visa, and vaccination certificate.'},{q:'How do I book a ticket?',a:'Call us or WhatsApp us with your preferred dates and destinations.'}];
 const DEFAULT_QA=[
-  {key:'hello',reply:"Hello! Welcome to Sanayah Travels & Tourism! How can I assist you today? For Umrah packages, flights, visas, or tours — just ask!"},
+  {key:'hello',reply:"Hello! Welcome to Sanayah Travels & Tourism! How can I assist you today? For Umrah packages, flights, visas, or tours � just ask!"},
   {key:'hi',reply:"Hi there! Thanks for reaching out to Sanayah Travels. How can I help you with your travel plans?"},
   {key:'assalam',reply:"Assalam-o-Alaikum! Welcome to Sanayah Travels & Tourism. How may we assist you with your travel needs today?"},
   {key:'umrah',reply:"We offer 4 Umrah packages for 2026:\n- Economy: 10 Nights, 3-Star, from PKR 130K\n- Standard: 14 Nights, 4-Star, from PKR 180K (Most Popular)\n- Premium: 14 Nights, 5-Star, from PKR 280K (VIP)\n- Family: 14 Nights, from PKR 150K/pp (4+ group, kids under 5 free)\nAll include visa, flights, hotels, and guided Ziyarat."},
-  {key:'visa',reply:"We provide visa assistance for: UAE (3-5 days), Saudi (5-7 days), UK (15-21 days), USA (4-8 wks), Schengen (10-15 days), Malaysia (2-4 days), Thailand (2-3 days), Turkey (3-5 days), China (5-7 days), Jordan (3-5 days), Canada (4-8 wks), Australia (3-6 wks). Process: Consultation → Documents → Application → Approved!"},
+  {key:'visa',reply:"We provide visa assistance for: UAE (3-5 days), Saudi (5-7 days), UK (15-21 days), USA (4-8 wks), Schengen (10-15 days), Malaysia (2-4 days), Thailand (2-3 days), Turkey (3-5 days), China (5-7 days), Jordan (3-5 days), Canada (4-8 wks), Australia (3-6 wks). Process: Consultation ? Documents ? Application ? Approved!"},
   {key:'flight',reply:"We book domestic & international flights with top airlines like Emirates, Qatar Airways, Turkish Airlines, PIA, Etihad, Flydubai, and more. Call +92 300 2816459 or WhatsApp for the best rates!"},
   {key:'ticket',reply:"For flight bookings, contact us with your preferred dates and destinations. We offer competitive rates on all major airlines. Call +92 300 2816459 or WhatsApp!"},
   {key:'price',reply:"Our packages start from PKR 18K (Lahore Tour) to PKR 350K (Europe Tour). Umrah starts from PKR 130K. Contact us for a custom quote tailored to your needs!"},
   {key:'package',reply:"We offer: Umrah Packages (from PKR 130K), Dubai Explorer (5N from PKR 95K), Thailand (7N from PKR 120K), Europe Grand Tour (10N from PKR 350K), Northern Pakistan (7N from PKR 55K), Swat Valley (5N from PKR 35K), Lahore Heritage (3N from PKR 18K)."},
-  {key:'contact',reply:"📍 M-06 Mezzanine Floor, Galaxy Excel Block 10, Karachi 75300\n📞 +92 300 2816459\n📞 92 21 34832373\n✉ sanayahtravels@gmail.com\n💬 WhatsApp: https://wa.me/923002816459\n🕐 Mon-Sat 12PM-11PM (Sun Closed)"},
+  {key:'contact',reply:"?? M-06 Mezzanine Floor, Galaxy Excel Block 10 Gulshan-e-Iqbal, 75300 Karachi\n?? +92 300 2816459\n?? 92 21 34832373\n? sanayahtravels@gmail.com\n?? WhatsApp: https://wa.me/923002816459\n?? Mon-Sat 12PM-11PM (Sun Closed)"},
   {key:'phone',reply:"You can reach us at +92 300 2816459 or PTCL: 92 21 34832373. We're available Monday-Saturday, 12PM-11PM."},
-  {key:'address',reply:"Our office is at M-06 Mezzanine Floor, Galaxy Excel Block 10, Karachi 75300, Pakistan. Business hours: Mon-Sat 12PM-11PM. Sunday closed."},
-  {key:'whatsapp',reply:"Chat with us on WhatsApp: https://wa.me/923002816459 — we respond quickly!"},
+  {key:'address',reply:"Our office is at M-06 Mezzanine Floor, Galaxy Excel Block 10 Gulshan-e-Iqbal, 75300 Karachi, Pakistan. Business hours: Mon-Sat 12PM-11PM. Sunday closed."},
+  {key:'whatsapp',reply:"Chat with us on WhatsApp: https://wa.me/923002816459 � we respond quickly!"},
   {key:'email',reply:"You can email us at sanayahtravels@gmail.com and we'll get back to you promptly."},
   {key:'hours',reply:"We're open Monday to Saturday, 12:00 PM to 11:00 PM. Sunday is closed."},
   {key:'destination',reply:"We cover 80+ destinations including: Makkah/Madinah, Dubai, Northern Pakistan (Hunza, Skardu), Thailand, Malaysia, Europe, Turkey, Jordan, Bali, Maldives, Sri Lanka, and more!"},
@@ -51,7 +51,7 @@ const DEFAULT_QA=[
   {key:'dubai',reply:"Dubai Explorer: 5 Nights from PKR 95,000. Includes flights, 4-star hotel, airport transfers, and city tour. Contact us for details!"},
   {key:'europe',reply:"Europe Grand Tour (Paris, Rome, Barcelona): 10 Nights from PKR 350,000. Premium package with 4-star hotels, guided tours, and flights."},
   {key:'thailand',reply:"Thailand Bangkok & Phuket: 7 Nights from PKR 120,000. Our trending package! Includes flights, hotels, island tours, and transfers."},
-  {key:'hotel',reply:"We book hotels worldwide — from budget to 5-star luxury. Give us your dates and preferences and we'll find the best rates!"},
+  {key:'hotel',reply:"We book hotels worldwide � from budget to 5-star luxury. Give us your dates and preferences and we'll find the best rates!"},
   {key:'insurance',reply:"We offer travel insurance covering medical expenses, trip cancellation, and lost baggage. Ask us for a quote with your package!"},
   {key:'cruise',reply:"We offer cruise packages for Arabian Sea, Mediterranean, and Southeast Asia. Contact us for available dates and pricing!"},
   {key:'license',reply:"Sanayah Travels is fully government-licensed with G.L # 5134. We've been serving travelers since 2013 with 100% reliability."},
@@ -65,19 +65,19 @@ function initDefaults(){
   if(!lsGet('sanayah_blog'))lsSet('sanayah_blog',DEFAULT_BLOG);
   if(!lsGet('sanayah_faq'))lsSet('sanayah_faq',DEFAULT_FAQ);
   if(!lsGet('sanayah_qa'))lsSet('sanayah_qa',DEFAULT_QA);
-  var chatCfg=lsGet('sanayah_chatconfig');if(!chatCfg||!chatCfg.apiKey)lsSet('sanayah_chatconfig',{provider:'deepseek',apiKey:'sk-7EkpLqt3XqAfxeGNJnk07gU6eJQ9fsddaGBTSTeMjIdcwLssiEJilH5G6w3v0i0Q',systemPrompt:"You are a dedicated customer service AI assistant for Sanayah Travels & Tourism, a government-licensed (G.L # 5134) travel agency based in Karachi, Pakistan, operating since 2013. Your role is to warmly and accurately answer customer questions about the company's full range of services.\n\nCOMPANY INFO:\n- Name: Sanayah Travels & Tourism\n- Tagline: \"Your Gateway to the World\"\n- Location: M-06 Mezzanine Floor, Galaxy Excel Block 10, Karachi 75300, Pakistan\n- Hours: Monday-Saturday 12:00 PM - 11:00 PM (Sunday Closed)\n- Phone: +92 300 2816459\n- PTCL: 92 21 34832373\n- Email: sanayahtravels@gmail.com\n- WhatsApp: https://wa.me/923002816459\n- License: G.L # 5134, Government Licensed\n- Experience: 15+ years\n\nSERVICES:\n1. Flight Bookings - Domestic & international with PIA, Emirates, Qatar, Turkish Airlines, etc.\n2. Umrah Packages - Complete arrangements: visa, flights, hotels, guided Ziyarat tours, meals\n3. Hotel Reservations - Budget to 5-star luxury worldwide\n4. Visa Assistance - For UAE, Saudi Arabia, UK, USA, Schengen, Malaysia, Thailand, Turkey, China, Jordan, Canada, Australia\n5. Tour Packages - Domestic (Northern Pakistan: Hunza, Swat, Skardu, Lahore) & International (Dubai, Thailand, Europe, Turkey, Bali, Maldives)\n6. Airport Transfers - Pickup/drop-off in Pakistan and internationally\n7. Cruise Packages - Arabian Sea, Mediterranean, Southeast Asia\n8. Corporate Travel - Bulk bookings, business class, priority service\n9. Travel Insurance - Medical, trip cancellation, lost baggage coverage\n\nUMRAH PACKAGES 2026:\n- Economy Umrah: 10 Nights, 3-Star Hotel, from PKR 130,000 (includes return flights, visa, guided Ziyarat)\n- Standard Umrah: 14 Nights, 4-Star Hotel, from PKR 180,000 (most popular, includes meals, Zam Zam, guided tours)\n- Premium Umrah: 14 Nights, 5-Star Hotel, from PKR 280,000 (steps from Haram, business class flights, VIP service)\n- Family Umrah: 14 Nights, from PKR 150,000 per person (group rates for 4+, kids under 5 free)\n\nINTERNATIONAL PACKAGES:\n- Dubai Explorer: 5 Nights from PKR 95,000\n- Thailand Bangkok & Phuket: 7 Nights from PKR 120,000 (Trending)\n- Europe Grand Tour (Paris, Rome, Barcelona): 10 Nights from PKR 350,000\n\nDOMESTIC PACKAGES:\n- Northern Pakistan (Hunza, Khunjerab, Attabad): 7 Nights from PKR 55,000 (Popular)\n- Swat & Kalam Valley: 5 Nights from PKR 35,000\n- Lahore Heritage Tour: 3 Nights from PKR 18,000\n\nVISA PROCESSING TIMES:\n- UAE/Dubai: 3-5 Working Days\n- Saudi Arabia: 5-7 Working Days\n- UK: 15-21 Working Days\n- USA: 4-8 Weeks\n- Schengen (Europe): 10-15 Working Days\n- Malaysia: 2-4 Working Days\n- Thailand: 2-3 Working Days\n- Turkey: 3-5 Working Days\n- China: 5-7 Working Days\n- Jordan: 3-5 Working Days\n- Canada: 4-8 Weeks\n- Australia: 3-6 Weeks\n\nVisa Process: Consultation → Document Collection → Application Filing → Visa Approved\n\nDESTINATIONS:\n- Makkah & Madinah (Most Popular, from PKR 180,000)\n- Northern Pakistan: Hunza, Gilgit, Skardu (from PKR 55,000)\n- Dubai & UAE (from PKR 95,000)\n- Thailand & Malaysia (from PKR 95,000)\n- Europe Tours (Premium)\n- USA & Canada (Premium)\n- Bali & Indonesia (Exotic)\n- Turkey & Jordan (Cultural)\n- Sri Lanka & Maldives (Adventure)\n\nTEAM:\n- Fahad Naseem: Founder & Director (15+ years, Umrah & international specialist)\n- Farrukh Naseem: Director (operations & quality service)\n- Haris Khan: Head of Visa Services (Schengen, UAE, UK, all major visas)\n- Hannan Moorad: Web Developer & Marketing\n\nSTATISTICS: 15+ Years | 5K+ Happy Travelers | 80+ Destinations | 1K+ Umrah Pilgrims Served | 100% Licensed & Verified\n\nSOCIAL MEDIA:\n- Facebook: https://www.facebook.com/share/1Y8gzFqBPC/?mibextid=wwXIfr\n- Instagram: https://www.instagram.com/sanayah_travels\n- TikTok: https://www.tiktok.com/@sanayahtravels\n- LinkedIn, Twitter, YouTube: Coming soon\n\nINSTRUCTIONS:\n- Be friendly, warm, and professional in your tone\n- Answer questions about any service listed above with specific details (prices, durations, processing times)\n- If asked about visa requirements, explain the process and timeframes\n- If asked about Umrah packages, share the 4 package options with details\n- If asked about flights, mention partner airlines and that customers should contact directly for quotes\n- Promote the company's 15+ years of experience, 5K+ happy travelers, and government license (G.L # 5134)\n- Always invite the customer to call +92 300 2816459 or WhatsApp for booking or personalized quotes\n- If asked something outside your knowledge, politely say you'll have a team member follow up and provide the phone number\n- Keep responses concise but informative, in English"})
+  var chatCfg=lsGet('sanayah_chatconfig');if(!chatCfg||!chatCfg.apiKey)lsSet('sanayah_chatconfig',{provider:'deepseek',apiKey:'sk-7EkpLqt3XqAfxeGNJnk07gU6eJQ9fsddaGBTSTeMjIdcwLssiEJilH5G6w3v0i0Q',systemPrompt:"You are a dedicated customer service AI assistant for Sanayah Travels & Tourism, a government-licensed (G.L # 5134) travel agency based in Karachi, Pakistan, operating since 2013. Your role is to warmly and accurately answer customer questions about the company's full range of services.\n\nCOMPANY INFO:\n- Name: Sanayah Travels & Tourism\n- Tagline: \"Your Gateway to the World\"\n- Location: M-06 Mezzanine Floor, Galaxy Excel Block 10 Gulshan-e-Iqbal, 75300 Karachi, Pakistan\n- Hours: Monday-Saturday 12:00 PM - 11:00 PM (Sunday Closed)\n- Phone: +92 300 2816459\n- PTCL: 92 21 34832373\n- Email: sanayahtravels@gmail.com\n- WhatsApp: https://wa.me/923002816459\n- License: G.L # 5134, Government Licensed\n- Experience: 15+ years\n\nSERVICES:\n1. Flight Bookings - Domestic & international with PIA, Emirates, Qatar, Turkish Airlines, etc.\n2. Umrah Packages - Complete arrangements: visa, flights, hotels, guided Ziyarat tours, meals\n3. Hotel Reservations - Budget to 5-star luxury worldwide\n4. Visa Assistance - For UAE, Saudi Arabia, UK, USA, Schengen, Malaysia, Thailand, Turkey, China, Jordan, Canada, Australia\n5. Tour Packages - Domestic (Northern Pakistan: Hunza, Swat, Skardu, Lahore) & International (Dubai, Thailand, Europe, Turkey, Bali, Maldives)\n6. Airport Transfers - Pickup/drop-off in Pakistan and internationally\n7. Cruise Packages - Arabian Sea, Mediterranean, Southeast Asia\n8. Corporate Travel - Bulk bookings, business class, priority service\n9. Travel Insurance - Medical, trip cancellation, lost baggage coverage\n\nUMRAH PACKAGES 2026:\n- Economy Umrah: 10 Nights, 3-Star Hotel, from PKR 130,000 (includes return flights, visa, guided Ziyarat)\n- Standard Umrah: 14 Nights, 4-Star Hotel, from PKR 180,000 (most popular, includes meals, Zam Zam, guided tours)\n- Premium Umrah: 14 Nights, 5-Star Hotel, from PKR 280,000 (steps from Haram, business class flights, VIP service)\n- Family Umrah: 14 Nights, from PKR 150,000 per person (group rates for 4+, kids under 5 free)\n\nINTERNATIONAL PACKAGES:\n- Dubai Explorer: 5 Nights from PKR 95,000\n- Thailand Bangkok & Phuket: 7 Nights from PKR 120,000 (Trending)\n- Europe Grand Tour (Paris, Rome, Barcelona): 10 Nights from PKR 350,000\n\nDOMESTIC PACKAGES:\n- Northern Pakistan (Hunza, Khunjerab, Attabad): 7 Nights from PKR 55,000 (Popular)\n- Swat & Kalam Valley: 5 Nights from PKR 35,000\n- Lahore Heritage Tour: 3 Nights from PKR 18,000\n\nVISA PROCESSING TIMES:\n- UAE/Dubai: 3-5 Working Days\n- Saudi Arabia: 5-7 Working Days\n- UK: 15-21 Working Days\n- USA: 4-8 Weeks\n- Schengen (Europe): 10-15 Working Days\n- Malaysia: 2-4 Working Days\n- Thailand: 2-3 Working Days\n- Turkey: 3-5 Working Days\n- China: 5-7 Working Days\n- Jordan: 3-5 Working Days\n- Canada: 4-8 Weeks\n- Australia: 3-6 Weeks\n\nVisa Process: Consultation ? Document Collection ? Application Filing ? Visa Approved\n\nDESTINATIONS:\n- Makkah & Madinah (Most Popular, from PKR 180,000)\n- Northern Pakistan: Hunza, Gilgit, Skardu (from PKR 55,000)\n- Dubai & UAE (from PKR 95,000)\n- Thailand & Malaysia (from PKR 95,000)\n- Europe Tours (Premium)\n- USA & Canada (Premium)\n- Bali & Indonesia (Exotic)\n- Turkey & Jordan (Cultural)\n- Sri Lanka & Maldives (Adventure)\n\nTEAM:\n- Fahad Naseem: Founder & Director (15+ years, Umrah & international specialist)\n- Farrukh Naseem: Director (operations & quality service)\n- Haris Khan: Head of Visa Services (Schengen, UAE, UK, all major visas)\n- Hannan Moorad: Web Developer & Marketing\n\nSTATISTICS: 15+ Years | 5K+ Happy Travelers | 80+ Destinations | 1K+ Umrah Pilgrims Served | 100% Licensed & Verified\n\nSOCIAL MEDIA:\n- Facebook: https://www.facebook.com/share/1Y8gzFqBPC/?mibextid=wwXIfr\n- Instagram: https://www.instagram.com/sanayah_travels\n- TikTok: https://www.tiktok.com/@sanayahtravels\n- LinkedIn, Twitter, YouTube: Coming soon\n\nINSTRUCTIONS:\n- Be friendly, warm, and professional in your tone\n- Answer questions about any service listed above with specific details (prices, durations, processing times)\n- If asked about visa requirements, explain the process and timeframes\n- If asked about Umrah packages, share the 4 package options with details\n- If asked about flights, mention partner airlines and that customers should contact directly for quotes\n- Promote the company's 15+ years of experience, 5K+ happy travelers, and government license (G.L # 5134)\n- Always invite the customer to call +92 300 2816459 or WhatsApp for booking or personalized quotes\n- If asked something outside your knowledge, politely say you'll have a team member follow up and provide the phone number\n- Keep responses concise but informative, in English"})
   if(!lsGet('sanayah_reviews'))lsSet('sanayah_reviews',[]);
   if(!lsGet('sanayah_wa'))lsSet('sanayah_wa','923002816459');
   if(!lsGet('sanayah_social'))lsSet('sanayah_social',{facebook:'',instagram:'',twitter:'',linkedin:'',youtube:'',tiktok:''});
   if(!lsGet('sanayah_about'))lsSet('sanayah_about',{title:'Welcome to Sanayah Travels',p1:'Your trusted travel partner since 2015.',p2:'We provide Umrah packages, international flights, visa assistance, and guided tours.',p3:'Our team is dedicated to making your travel seamless and memorable.',image:''});
-  if(!lsGet('sanayah_contact'))lsSet('sanayah_contact',{email:'info@sanayahtravels.com',address:'Office No. 2, Al-Noor Plaza, Peshawar',ptcl:'092 21 34832373',hours:'Mon-Sat: 9am to 7pm'});
+  if(!lsGet('sanayah_contact'))lsSet('sanayah_contact',{email:'info@sanayahtravels.com',address:'M-06 Mezzanine Floor, Galaxy Excel Block 10 Gulshan-e-Iqbal, 75300 Karachi',ptcl:'092 21 34832373',hours:'Mon-Sat: 12pm to 11pm'});
   if(!lsGet('sanayah_seo'))lsSet('sanayah_seo',{title:'Sanayah Travels & Tourism | G.L # 5134',desc:'Sanayah Travels & Tourism - G.L # 5134. Umrah Packages, International & Domestic Flights, Visa Assistance, Hotel Booking, and Tour Packages.',keywords:'sanayah travels, umrah packages, flights, visa assistance, travel agency peshawar'});
   if(!lsGet('sanayah_email'))lsSet('sanayah_email',{key:'',service:'',template:'',recipient:'sanayahtravels@gmail.com'});
   if(!lsGet('sanayah_pages'))lsSet('sanayah_pages',{home:{title:'Welcome!',subtitle:'Your trusted travel partner'},about:{title:'About Us',p1:'We are one of the leading travel agencies in Peshawar.',p2:'With years of experience in the industry, we pride ourselves on delivering exceptional service.',p3:'We specialize in Umrah packages, flight bookings, visa assistance, and guided tours.'},umrah:{title:'Umrah Packages',subtitle:'Complete packages for your spiritual journey'},flights:{title:'International Flights',subtitle:'Book flights worldwide at the best prices'},visa:{title:'Visa Assistance',subtitle:'Hassle-free visa processing'},tours:{title:'Tour Packages',subtitle:'Explore the world with us'},honeymoon:{title:'Honeymoon Packages',subtitle:'Romantic getaways for couples'},contact:{title:'Contact Us',subtitle:'Get in touch with our team'}});
 }
 initDefaults();
 
-// ─── TOAST ───
+// --- TOAST ---
 let toastTimer;
 function showToast(msg,t='success'){
   const el=g('adminToast');if(!el)return;
@@ -85,7 +85,7 @@ function showToast(msg,t='success'){
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3500);
 }
 
-// ─── LOGIN ───
+// --- LOGIN ---
 window.doAdminLogin=async function(){
   const u=g('loginUser').value.trim(),p=g('loginPass').value.trim();
   var ok = false;
@@ -105,7 +105,7 @@ window.doAdminLogout=function(){
   g('loginUser').value='';g('loginPass').value='';
 };
 
-// ─── TAB SWITCH ───
+// --- TAB SWITCH ---
 window.switchAdminTab=function(tab){
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
@@ -126,7 +126,7 @@ window.switchAdminTab=function(tab){
   else if(tab==='settings')loadSettings();
 };
 
-// ─── DASHBOARD ───
+// --- DASHBOARD ---
 function loadDashboard(){
   const reviews=lsGet('sanayah_reviews',[]);
   const airlines=lsGet('sanayah_airlines',[]);
@@ -148,7 +148,7 @@ function loadDashboard(){
 <div class="astat" onclick="switchAdminTab('visitors')" style="cursor:pointer"><div class="astat-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="astat-val">${visitors.length}</div><div class="astat-lbl">Visitors</div></div>`;
 }
 
-// ─── REVIEWS ───
+// --- REVIEWS ---
 function loadReviews(){
     apiGetReviews(true).then(function(reviews){
       if (!reviews || !reviews.length) { reviews = lsGet('sanayah_reviews',[]); }
@@ -171,10 +171,10 @@ function loadReviews(){
   }
   tbody.innerHTML=reviews.map((r,i)=>{
     const statusClass=r.approved?'approved':r.status||'pending';
-    return `<tr><td>${i+1}</td><td><span class="tbl-name">${esc(r.name)}</span></td><td>${esc(r.text||r.review||'')}</td><td>${'★'.repeat(r.rating||r.stars||5)}</td><td>${r.date||''}</td><td><span class="rev-status ${statusClass}">${statusClass}</span></td><td class="tbl-actions">
-<button class="tbl-btn approve" onclick="reviewAction(${i},'approved')">✓</button>
-<button class="tbl-btn reject" onclick="reviewAction(${i},'rejected')">✗</button>
-<button class="tbl-btn del" onclick="deleteReview(${i})">🗑</button></td></tr>`;
+    return `<tr><td>${i+1}</td><td><span class="tbl-name">${esc(r.name)}</span></td><td>${esc(r.text||r.review||'')}</td><td>${'?'.repeat(r.rating||r.stars||5)}</td><td>${r.date||''}</td><td><span class="rev-status ${statusClass}">${statusClass}</span></td><td class="tbl-actions">
+<button class="tbl-btn approve" onclick="reviewAction(${i},'approved')">?</button>
+<button class="tbl-btn reject" onclick="reviewAction(${i},'rejected')">?</button>
+<button class="tbl-btn del" onclick="deleteReview(${i})">??</button></td></tr>`;
   }).join('');
 }
 window.reviewAction=function(i,st){
@@ -194,7 +194,7 @@ window.deleteReview=function(i){
   g('deleteModal').classList.add('open');
 };
 
-// ─── AIRLINES ───
+// --- AIRLINES ---
 let _editAlId=null,_alDataUrl='';
 function loadAirlines(){
   const al=lsGet('sanayah_airlines',[]);
@@ -257,7 +257,7 @@ window.deleteAirline=function(id){
 function closeAirlineModal(){g('airlineModal').classList.remove('open');_editAlId=null;_alDataUrl='';}
 window.closeAirlineModal=closeAirlineModal;
 
-// ─── ABOUT CONTENT ───
+// --- ABOUT CONTENT ---
 let _aboutImgData='';
 function loadAboutContent(){
   const ab=lsGet('sanayah_about',{title:'',p1:'',p2:'',p3:'',image:''});
@@ -280,7 +280,7 @@ window.saveAboutContent=function(){
   showToast('About section saved');
 };
 
-// ─── PAGES ───
+// --- PAGES ---
 function loadPages(){
   const pages=lsGet('sanayah_pages',{});
   const pageNames=Object.keys(pages);
@@ -313,7 +313,7 @@ window.saveCurrentPage=function(name){
   showToast(name.charAt(0).toUpperCase()+name.slice(1)+' page saved');
 };
 
-// ─── BRANDING ───
+// --- BRANDING ---
 function loadBranding(){
   const social=lsGet('sanayah_social',{});
   g('socFb').value=social.facebook||'';g('socIg').value=social.instagram||'';
@@ -439,7 +439,7 @@ window.adminRemoveLogo=function(){
   showToast('Logo removed');
 };
 
-// ─── BLOG ───
+// --- BLOG ---
 function loadBlog(){
   const blog=lsGet('sanayah_blog',DEFAULT_BLOG);
   const grid=g('blogGrid');
@@ -487,7 +487,7 @@ window.saveBlogSettings=function(){
   lsSet('sanayah_blog',blog);showToast('Blog settings saved');
 };
 
-// ─── FAQ ───
+// --- FAQ ---
 function loadFaqEditor(){
   const faq=lsGet('sanayah_faq',[]);
   const wrap=g('faqEditorList');
@@ -516,9 +516,9 @@ window.saveFaqAll=function(){
   lsSet('sanayah_faq',faq);showToast('All FAQ saved');
 };
 
-// ─── CHATBOT ───
+// --- CHATBOT ---
 function loadChatbot(){
-  const cfg=lsGet('sanayah_chatconfig',{provider:'deepseek',apiKey:'sk-7EkpLqt3XqAfxeGNJnk07gU6eJQ9fsddaGBTSTeMjIdcwLssiEJilH5G6w3v0i0Q',systemPrompt:"You are a dedicated customer service AI assistant for Sanayah Travels & Tourism, a government-licensed (G.L # 5134) travel agency based in Karachi, Pakistan, operating since 2013. Your role is to warmly and accurately answer customer questions about the company's full range of services.\n\nCOMPANY INFO:\n- Name: Sanayah Travels & Tourism\n- Tagline: \"Your Gateway to the World\"\n- Location: M-06 Mezzanine Floor, Galaxy Excel Block 10, Karachi 75300, Pakistan\n- Hours: Monday-Saturday 12:00 PM - 11:00 PM (Sunday Closed)\n- Phone: +92 300 2816459\n- PTCL: 92 21 34832373\n- Email: sanayahtravels@gmail.com\n- WhatsApp: https://wa.me/923002816459\n- License: G.L # 5134, Government Licensed\n- Experience: 15+ years\n\nSERVICES:\n1. Flight Bookings - Domestic & international with PIA, Emirates, Qatar, Turkish Airlines, etc.\n2. Umrah Packages - Complete arrangements: visa, flights, hotels, guided Ziyarat tours, meals\n3. Hotel Reservations - Budget to 5-star luxury worldwide\n4. Visa Assistance - For UAE, Saudi Arabia, UK, USA, Schengen, Malaysia, Thailand, Turkey, China, Jordan, Canada, Australia\n5. Tour Packages - Domestic (Northern Pakistan: Hunza, Swat, Skardu, Lahore) & International (Dubai, Thailand, Europe, Turkey, Bali, Maldives)\n6. Airport Transfers - Pickup/drop-off in Pakistan and internationally\n7. Cruise Packages - Arabian Sea, Mediterranean, Southeast Asia\n8. Corporate Travel - Bulk bookings, business class, priority service\n9. Travel Insurance - Medical, trip cancellation, lost baggage coverage\n\nUMRAH PACKAGES 2026:\n- Economy Umrah: 10 Nights, 3-Star Hotel, from PKR 130,000 (includes return flights, visa, guided Ziyarat)\n- Standard Umrah: 14 Nights, 4-Star Hotel, from PKR 180,000 (most popular, includes meals, Zam Zam, guided tours)\n- Premium Umrah: 14 Nights, 5-Star Hotel, from PKR 280,000 (steps from Haram, business class flights, VIP service)\n- Family Umrah: 14 Nights, from PKR 150,000 per person (group rates for 4+, kids under 5 free)\n\nINTERNATIONAL PACKAGES:\n- Dubai Explorer: 5 Nights from PKR 95,000\n- Thailand Bangkok & Phuket: 7 Nights from PKR 120,000 (Trending)\n- Europe Grand Tour (Paris, Rome, Barcelona): 10 Nights from PKR 350,000\n\nDOMESTIC PACKAGES:\n- Northern Pakistan (Hunza, Khunjerab, Attabad): 7 Nights from PKR 55,000 (Popular)\n- Swat & Kalam Valley: 5 Nights from PKR 35,000\n- Lahore Heritage Tour: 3 Nights from PKR 18,000\n\nVISA PROCESSING TIMES:\n- UAE/Dubai: 3-5 Working Days\n- Saudi Arabia: 5-7 Working Days\n- UK: 15-21 Working Days\n- USA: 4-8 Weeks\n- Schengen (Europe): 10-15 Working Days\n- Malaysia: 2-4 Working Days\n- Thailand: 2-3 Working Days\n- Turkey: 3-5 Working Days\n- China: 5-7 Working Days\n- Jordan: 3-5 Working Days\n- Canada: 4-8 Weeks\n- Australia: 3-6 Weeks\n\nVisa Process: Consultation → Document Collection → Application Filing → Visa Approved\n\nDESTINATIONS:\n- Makkah & Madinah (Most Popular, from PKR 180,000)\n- Northern Pakistan: Hunza, Gilgit, Skardu (from PKR 55,000)\n- Dubai & UAE (from PKR 95,000)\n- Thailand & Malaysia (from PKR 95,000)\n- Europe Tours (Premium)\n- USA & Canada (Premium)\n- Bali & Indonesia (Exotic)\n- Turkey & Jordan (Cultural)\n- Sri Lanka & Maldives (Adventure)\n\nTEAM:\n- Fahad Naseem: Founder & Director (15+ years, Umrah & international specialist)\n- Farrukh Naseem: Director (operations & quality service)\n- Haris Khan: Head of Visa Services (Schengen, UAE, UK, all major visas)\n- Hannan Moorad: Web Developer & Marketing\n\nSTATISTICS: 15+ Years | 5K+ Happy Travelers | 80+ Destinations | 1K+ Umrah Pilgrims Served | 100% Licensed & Verified\n\nSOCIAL MEDIA:\n- Facebook: https://www.facebook.com/share/1Y8gzFqBPC/?mibextid=wwXIfr\n- Instagram: https://www.instagram.com/sanayah_travels\n- TikTok: https://www.tiktok.com/@sanayahtravels\n- LinkedIn, Twitter, YouTube: Coming soon\n\nINSTRUCTIONS:\n- Be friendly, warm, and professional in your tone\n- Answer questions about any service listed above with specific details (prices, durations, processing times)\n- If asked about visa requirements, explain the process and timeframes\n- If asked about Umrah packages, share the 4 package options with details\n- If asked about flights, mention partner airlines and that customers should contact directly for quotes\n- Promote the company's 15+ years of experience, 5K+ happy travelers, and government license (G.L # 5134)\n- Always invite the customer to call +92 300 2816459 or WhatsApp for booking or personalized quotes\n- If asked something outside your knowledge, politely say you'll have a team member follow up and provide the phone number\n- Keep responses concise but informative, in English"});
+  const cfg=lsGet('sanayah_chatconfig',{provider:'deepseek',apiKey:'sk-7EkpLqt3XqAfxeGNJnk07gU6eJQ9fsddaGBTSTeMjIdcwLssiEJilH5G6w3v0i0Q',systemPrompt:"You are a dedicated customer service AI assistant for Sanayah Travels & Tourism, a government-licensed (G.L # 5134) travel agency based in Karachi, Pakistan, operating since 2013. Your role is to warmly and accurately answer customer questions about the company's full range of services.\n\nCOMPANY INFO:\n- Name: Sanayah Travels & Tourism\n- Tagline: \"Your Gateway to the World\"\n- Location: M-06 Mezzanine Floor, Galaxy Excel Block 10 Gulshan-e-Iqbal, 75300 Karachi, Pakistan\n- Hours: Monday-Saturday 12:00 PM - 11:00 PM (Sunday Closed)\n- Phone: +92 300 2816459\n- PTCL: 92 21 34832373\n- Email: sanayahtravels@gmail.com\n- WhatsApp: https://wa.me/923002816459\n- License: G.L # 5134, Government Licensed\n- Experience: 15+ years\n\nSERVICES:\n1. Flight Bookings - Domestic & international with PIA, Emirates, Qatar, Turkish Airlines, etc.\n2. Umrah Packages - Complete arrangements: visa, flights, hotels, guided Ziyarat tours, meals\n3. Hotel Reservations - Budget to 5-star luxury worldwide\n4. Visa Assistance - For UAE, Saudi Arabia, UK, USA, Schengen, Malaysia, Thailand, Turkey, China, Jordan, Canada, Australia\n5. Tour Packages - Domestic (Northern Pakistan: Hunza, Swat, Skardu, Lahore) & International (Dubai, Thailand, Europe, Turkey, Bali, Maldives)\n6. Airport Transfers - Pickup/drop-off in Pakistan and internationally\n7. Cruise Packages - Arabian Sea, Mediterranean, Southeast Asia\n8. Corporate Travel - Bulk bookings, business class, priority service\n9. Travel Insurance - Medical, trip cancellation, lost baggage coverage\n\nUMRAH PACKAGES 2026:\n- Economy Umrah: 10 Nights, 3-Star Hotel, from PKR 130,000 (includes return flights, visa, guided Ziyarat)\n- Standard Umrah: 14 Nights, 4-Star Hotel, from PKR 180,000 (most popular, includes meals, Zam Zam, guided tours)\n- Premium Umrah: 14 Nights, 5-Star Hotel, from PKR 280,000 (steps from Haram, business class flights, VIP service)\n- Family Umrah: 14 Nights, from PKR 150,000 per person (group rates for 4+, kids under 5 free)\n\nINTERNATIONAL PACKAGES:\n- Dubai Explorer: 5 Nights from PKR 95,000\n- Thailand Bangkok & Phuket: 7 Nights from PKR 120,000 (Trending)\n- Europe Grand Tour (Paris, Rome, Barcelona): 10 Nights from PKR 350,000\n\nDOMESTIC PACKAGES:\n- Northern Pakistan (Hunza, Khunjerab, Attabad): 7 Nights from PKR 55,000 (Popular)\n- Swat & Kalam Valley: 5 Nights from PKR 35,000\n- Lahore Heritage Tour: 3 Nights from PKR 18,000\n\nVISA PROCESSING TIMES:\n- UAE/Dubai: 3-5 Working Days\n- Saudi Arabia: 5-7 Working Days\n- UK: 15-21 Working Days\n- USA: 4-8 Weeks\n- Schengen (Europe): 10-15 Working Days\n- Malaysia: 2-4 Working Days\n- Thailand: 2-3 Working Days\n- Turkey: 3-5 Working Days\n- China: 5-7 Working Days\n- Jordan: 3-5 Working Days\n- Canada: 4-8 Weeks\n- Australia: 3-6 Weeks\n\nVisa Process: Consultation ? Document Collection ? Application Filing ? Visa Approved\n\nDESTINATIONS:\n- Makkah & Madinah (Most Popular, from PKR 180,000)\n- Northern Pakistan: Hunza, Gilgit, Skardu (from PKR 55,000)\n- Dubai & UAE (from PKR 95,000)\n- Thailand & Malaysia (from PKR 95,000)\n- Europe Tours (Premium)\n- USA & Canada (Premium)\n- Bali & Indonesia (Exotic)\n- Turkey & Jordan (Cultural)\n- Sri Lanka & Maldives (Adventure)\n\nTEAM:\n- Fahad Naseem: Founder & Director (15+ years, Umrah & international specialist)\n- Farrukh Naseem: Director (operations & quality service)\n- Haris Khan: Head of Visa Services (Schengen, UAE, UK, all major visas)\n- Hannan Moorad: Web Developer & Marketing\n\nSTATISTICS: 15+ Years | 5K+ Happy Travelers | 80+ Destinations | 1K+ Umrah Pilgrims Served | 100% Licensed & Verified\n\nSOCIAL MEDIA:\n- Facebook: https://www.facebook.com/share/1Y8gzFqBPC/?mibextid=wwXIfr\n- Instagram: https://www.instagram.com/sanayah_travels\n- TikTok: https://www.tiktok.com/@sanayahtravels\n- LinkedIn, Twitter, YouTube: Coming soon\n\nINSTRUCTIONS:\n- Be friendly, warm, and professional in your tone\n- Answer questions about any service listed above with specific details (prices, durations, processing times)\n- If asked about visa requirements, explain the process and timeframes\n- If asked about Umrah packages, share the 4 package options with details\n- If asked about flights, mention partner airlines and that customers should contact directly for quotes\n- Promote the company's 15+ years of experience, 5K+ happy travelers, and government license (G.L # 5134)\n- Always invite the customer to call +92 300 2816459 or WhatsApp for booking or personalized quotes\n- If asked something outside your knowledge, politely say you'll have a team member follow up and provide the phone number\n- Keep responses concise but informative, in English"});
   g('chatProvider').value=cfg.provider||'';
   g('chatApiKey').value=cfg.apiKey||'';
   g('chatSystemPrompt').value=cfg.systemPrompt||'';
@@ -565,7 +565,7 @@ window.deleteQa=function(i){
 function closeQaModal(){g('qaModal').classList.remove('open');_editQaIdx=null;}
 window.closeQaModal=closeQaModal;
 
-// ─── SETTINGS ───
+// --- SETTINGS ---
 function loadSettings(){
   g('newPass').value='';
   g('waNum').value=lsGet('sanayah_wa','923002816459');
@@ -651,11 +651,11 @@ function renderVisitorsTable(visitors) {
   }).join('');
 }
 
-// ─── DELETE MODAL ───
+// --- DELETE MODAL ---
 window.closeDeleteModal=function(){g('deleteModal').classList.remove('open');window._delCb=null;};
 window.confirmDeleteAction=function(){if(window._delCb){window._delCb();window._delCb=null;}g('deleteModal').classList.remove('open');};
 
-// ─── MODAL CLOSE ON OVERLAY CLICK ───
+// --- MODAL CLOSE ON OVERLAY CLICK ---
 document.addEventListener('click',function(e){
   ['airlineModal','blogModal','qaModal','deleteModal'].forEach(id=>{
     const el=g(id);
@@ -663,13 +663,13 @@ document.addEventListener('click',function(e){
   });
 });
 
-// ─── ESCAPE ───
+// --- ESCAPE ---
 function esc(s){
   if(!s||typeof s!=='string')return s||'';
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 }
 
-// ─── INIT ───
+// --- INIT ---
 function loadAll(){
   loadDashboard();
 }
