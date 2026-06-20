@@ -729,6 +729,12 @@ document.addEventListener('DOMContentLoaded', syncFromBackend);
     var stored = JSON.parse(localStorage.getItem('sanayah_visitors') || '[]');
     var last = stored.length ? stored[0] : null;
     if (last && (Date.now() - last.time < 60000)) return;
+    function saveVisitor(v) {
+      stored.unshift(v);
+      if (stored.length > 50) stored = stored.slice(0, 50);
+      localStorage.setItem('sanayah_visitors', JSON.stringify(stored));
+      apiTrackVisitor(v);
+    }
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://ipapi.co/json/', true);
     xhr.timeout = 5000;
@@ -736,12 +742,11 @@ document.addEventListener('DOMContentLoaded', syncFromBackend);
       try {
         var data = JSON.parse(xhr.responseText);
         var v = { ip: data.ip || 'Unknown', country: data.country_name || data.country || '', city: data.city || '', region: data.region || '', time: Date.now(), page: window.location.pathname.split('/').pop() || 'index' };
-        stored.unshift(v);
-        if (stored.length > 50) stored = stored.slice(0, 50);
-        localStorage.setItem('sanayah_visitors', JSON.stringify(stored));
-        apiTrackVisitor(v);
-      } catch(e) {}
+        saveVisitor(v);
+      } catch(e) { saveVisitor({ ip: 'Unknown', country: '', city: '', region: '', time: Date.now(), page: window.location.pathname.split('/').pop() || 'index' }); }
     };
+    xhr.onerror = function() { saveVisitor({ ip: 'Unknown', country: '', city: '', region: '', time: Date.now(), page: window.location.pathname.split('/').pop() || 'index' }); };
+    xhr.ontimeout = function() { saveVisitor({ ip: 'Unknown', country: '', city: '', region: '', time: Date.now(), page: window.location.pathname.split('/').pop() || 'index' }); };
     xhr.send();
   } catch(e) {}
 })();

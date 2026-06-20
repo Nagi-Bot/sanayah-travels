@@ -9,6 +9,12 @@ app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// DB status middleware (MUST be before routes)
+app.use((req, res, next) => {
+  req.dbConnected = global.dbConnected;
+  next();
+});
+
 // Import all route handlers
 app.use('/api/auth', require('../server/routes/auth'));
 app.use('/api/reviews', require('../server/routes/reviews'));
@@ -21,12 +27,6 @@ app.use('/api/qa', require('../server/routes/qa'));
 app.use('/api/settings', require('../server/routes/settings'));
 app.use('/api/pages', require('../server/routes/pages'));
 app.use('/api/chatbot', require('../server/routes/chatbot'));
-
-// DB status middleware
-app.use((req, res, next) => {
-  req.dbConnected = global.dbConnected;
-  next();
-});
 
 // MongoDB connection - cache the promise for reuse
 let mongoPromise = null;
