@@ -47,25 +47,6 @@ app.use('/api/settings', require('../server/routes/settings'));
 app.use('/api/pages', require('../server/routes/pages'));
 app.use('/api/chatbot', require('../server/routes/chatbot'));
 
-// MongoDB connection - cache the promise for reuse
-let mongoPromise = null;
-let dbError = null;
-
-function connectMongo() {
-  if (!mongoPromise && process.env.MONGODB_URI) {
-    mongoPromise = mongoose.connect(process.env.MONGODB_URI, {
-      serverSelectionTimeoutMS: 10000,
-      connectTimeoutMS: 10000
-    });
-    mongoPromise
-      .then(() => { global.dbConnected = true; })
-      .catch(err => { dbError = err.message; global.dbConnected = false; });
-  }
-  return mongoPromise;
-}
-
-connectMongo();
-
 app.get('/api/health', async (req, res) => {
   if (mongoPromise) {
     try {
