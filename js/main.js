@@ -519,6 +519,8 @@ function initDynamicContent() {
     });
   });
 
+  // Clear wrong PTCL from localStorage if saved
+  try { var saved = JSON.parse(localStorage.getItem('sanayah_contact')); if (saved && saved.ptcl && saved.ptcl.indexOf('300') >= 0) { saved.ptcl = '92 21 34832373'; localStorage.setItem('sanayah_contact', JSON.stringify(saved)); } } catch(e) {}
   // Contact Info
   var contact = getContactInfo();
   if (contact.email) {
