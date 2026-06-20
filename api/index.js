@@ -9,9 +9,33 @@ app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// MongoDB connection - cache the promise for reuse
+let mongoPromise = null;
+let dbError = null;
+
+function connectMongo() {
+  if (!mongoPromise && process.env.MONGODB_URI) {
+    mongoPromise = mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000
+    });
+    mongoPromise
+      .then(() => { global.dbConnected = true; })
+      .catch(err => { dbError = err.message; global.dbConnected = false; });
+  }
+  return mongoPromise;
+}
+
+connectMongo();
+
 // DB status middleware (MUST be before routes)
-app.use((req, res, next) => {
-  req.dbConnected = global.dbConnected;
+app.use(async (req, res, next) => {
+  if (mongoPromise && !global.dbConnected && !dbError) {
+    try {
+      await Promise.race([mongoPromise, new Promise(r => setTimeout(r, 8000))]);
+    } catch(e) {}
+  }
+  req.dbConnected = !!global.dbConnected;
   next();
 });
 
