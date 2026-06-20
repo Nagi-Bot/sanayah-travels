@@ -529,6 +529,10 @@ function initDynamicContent() {
     document.querySelectorAll('[data-content="address"]').forEach(function(el) { el.textContent = contact.address; });
   }
   if (contact.ptcl) {
+    // Force correct PTCL
+    if (contact.ptcl.indexOf('300') >= 0 || contact.ptcl.indexOf('091') >= 0 || contact.ptcl.indexOf('92300') >= 0) {
+      contact.ptcl = '92 21 34832373';
+    }
     document.querySelectorAll('[data-content="ptcl"]').forEach(function(el) { el.textContent = contact.ptcl; });
     document.querySelectorAll('a[href^="tel:"]').forEach(function(a) {
       if (a.textContent.indexOf('PTCL')>=0 || a.textContent.indexOf('ptcl')>=0 || (a.href.indexOf('021')>=0 && a.textContent.indexOf('300')<0)) {
