@@ -48,7 +48,6 @@ function connectMongo() {
 connectMongo();
 
 app.get('/api/health', async (req, res) => {
-  // Wait for MongoDB connection to settle
   if (mongoPromise) {
     try {
       await Promise.race([
@@ -57,13 +56,7 @@ app.get('/api/health', async (req, res) => {
       ]);
     } catch(e) {}
   }
-  res.json({
-    status: 'ok',
-    timestamp: Date.now(),
-    db: !!global.dbConnected,
-    dbError: dbError,
-    hasMongoUri: !!process.env.MONGODB_URI
-  });
+  res.json({ status: 'ok', timestamp: Date.now(), db: !!global.dbConnected });
 });
 
 module.exports = app;
