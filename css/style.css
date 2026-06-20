@@ -678,8 +678,10 @@ footer { background: var(--sky-dark); padding: 60px 40px 32px; }
   .umrah-gallery { grid-template-columns: 1fr 1fr !important; grid-template-rows: auto !important; }
   .umrah-gallery > div:first-child { grid-row: span 1 !important; }
 
-  .contact-info-card { padding: 16px; flex-direction: column; text-align: center; }
-  .contact-info-icon { margin: 0 auto; }
+  .contact-info-card { padding: 14px 16px; flex-direction: row; text-align: left; gap: 14px; }
+  .contact-info-icon { margin: 0; width: 40px; height: 40px; font-size: 18px; flex-shrink: 0; }
+  .contact-info-card h4 { font-size: 11px; }
+  .contact-info-card p, .contact-info-card a { font-size: 13px; }
 }
 
 @media (max-width: 480px) {
@@ -784,6 +786,12 @@ footer { background: var(--sky-dark); padding: 60px 40px 32px; }
    COMPREHENSIVE MOBILE IMPROVEMENTS
    ═══════════════════════════════════════ */
 @media (max-width: 768px) {
+  /* Hide announce bar on mobile */
+  .announce-bar { display: none; }
+
+  /* Smaller logos */
+  .logo-wrap img { height: 32px !important; }
+  .logo-wrap [class*="iata"], .logo-wrap div:last-child img { height: 28px !important; max-width: 80px; }
   /* Prevent horizontal scroll */
   .topbar .tb-left { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .topbar .tb-left::-webkit-scrollbar { display: none; }

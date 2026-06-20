@@ -736,12 +736,12 @@ document.addEventListener('DOMContentLoaded', syncFromBackend);
       apiTrackVisitor(v);
     }
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://ipapi.co/json/', true);
+    xhr.open('GET', 'https://ip-api.com/json/?fields=query,country,city,regionName', true);
     xhr.timeout = 5000;
     xhr.onload = function() {
       try {
         var data = JSON.parse(xhr.responseText);
-        var v = { ip: data.ip || 'Unknown', country: data.country_name || data.country || '', city: data.city || '', region: data.region || '', time: Date.now(), page: window.location.pathname.split('/').pop() || 'index' };
+        var v = { ip: data.query || 'Unknown', country: data.country || '', city: data.city || '', region: data.regionName || '', time: Date.now(), page: window.location.pathname.split('/').pop() || 'index' };
         saveVisitor(v);
       } catch(e) { saveVisitor({ ip: 'Unknown', country: '', city: '', region: '', time: Date.now(), page: window.location.pathname.split('/').pop() || 'index' }); }
     };
