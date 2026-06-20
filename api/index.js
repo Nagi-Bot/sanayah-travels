@@ -22,27 +22,41 @@ app.use('/api/settings', require('../server/routes/settings'));
 app.use('/api/pages', require('../server/routes/pages'));
 app.use('/api/chatbot', require('../server/routes/chatbot'));
 
-// DB status
+// DB status middleware
 app.use((req, res, next) => {
   req.dbConnected = global.dbConnected;
   next();
 });
 
+// MongoDB connection - cache the promise for reuse
+let mongoPromise = null;
 let dbError = null;
 
-// Connect to MongoDB (async, won't block)
-if (process.env.MONGODB_URI) {
-  mongoose.connect(process.env.MONGODB_URI, {
-    serverSelectionTimeoutMS: 5000,
-    connectTimeoutMS: 5000
-  })
-    .then(() => { global.dbConnected = true; console.log('MongoDB connected'); })
-    .catch(err => { global.dbConnected = false; dbError = err.message; console.error('MongoDB error:', err.message); });
-} else {
-  console.log('MONGODB_URI not set');
+function connectMongo() {
+  if (!mongoPromise && process.env.MONGODB_URI) {
+    mongoPromise = mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000
+    });
+    mongoPromise
+      .then(() => { global.dbConnected = true; })
+      .catch(err => { dbError = err.message; global.dbConnected = false; });
+  }
+  return mongoPromise;
 }
 
-app.get('/api/health', (req, res) => {
+connectMongo();
+
+app.get('/api/health', async (req, res) => {
+  // Wait for MongoDB connection to settle
+  if (mongoPromise) {
+    try {
+      await Promise.race([
+        mongoPromise,
+        new Promise(r => setTimeout(r, 7000))
+      ]);
+    } catch(e) {}
+  }
   res.json({
     status: 'ok',
     timestamp: Date.now(),
