@@ -17,9 +17,9 @@ router.get('/', async (req, res) => {
 // POST /api/airlines - admin add
 router.post('/', auth, async (req, res) => {
   try {
-    const { name, data, logo } = req.body;
+    const { name, data, logo, customId, id } = req.body;
     if (!name) return res.status(400).json({ error: 'Name required' });
-    const airline = new Airline({ name: name.trim(), data: data || '', logo: logo || '' });
+    const airline = new Airline({ name: name.trim(), data: data || '', logo: logo || '', customId: customId || id || '' });
     await airline.save();
     res.status(201).json(airline);
   } catch (err) {
@@ -27,7 +27,7 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-// PUT /api/airlines/:id - admin update
+// PUT /api/airlines/:id - admin update (supports both MongoDB _id and customId)
 router.put('/:id', auth, async (req, res) => {
   try {
     const { name, data, logo } = req.body;
@@ -36,7 +36,13 @@ router.put('/:id', auth, async (req, res) => {
     if (data !== undefined) update.data = data;
     if (logo !== undefined) update.logo = logo;
 
-    const airline = await Airline.findByIdAndUpdate(req.params.id, update, { new: true });
+    let airline;
+    // Try customId first, then MongoDB _id
+    if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      airline = await Airline.findByIdAndUpdate(req.params.id, update, { new: true });
+    } else {
+      airline = await Airline.findOneAndUpdate({ customId: req.params.id }, update, { new: true });
+    }
     if (!airline) return res.status(404).json({ error: 'Airline not found' });
     res.json(airline);
   } catch (err) {
@@ -47,7 +53,12 @@ router.put('/:id', auth, async (req, res) => {
 // DELETE /api/airlines/:id - admin delete
 router.delete('/:id', auth, async (req, res) => {
   try {
-    const airline = await Airline.findByIdAndDelete(req.params.id);
+    let airline;
+    if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      airline = await Airline.findByIdAndDelete(req.params.id);
+    } else {
+      airline = await Airline.findOneAndDelete({ customId: req.params.id });
+    }
     if (!airline) return res.status(404).json({ error: 'Airline not found' });
     res.json({ success: true });
   } catch (err) {

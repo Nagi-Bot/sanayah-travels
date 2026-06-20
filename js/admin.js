@@ -232,21 +232,25 @@ window.handleAirlineImg=function(inp){
   r.onload=function(e){_alDataUrl=e.target.result;const p=g('alPreview');p.src=_alDataUrl;p.style.display='block';};
   r.readAsDataURL(file);
 };
-window.saveAirline=function(){
+window.saveAirline=async function(){
   const name=g('alName').value.trim();
   if(!name){showToast('Please enter airline name','error');return;}
   const al=lsGet('sanayah_airlines',[]);
   if(_editAlId){
     const idx=al.findIndex(a=>a.id===_editAlId);
     if(idx>-1){al[idx].name=name;al[idx].logo=_alDataUrl;}
+    lsSet('sanayah_airlines',al);
+    await apiUpdateAirline(_editAlId,{name,logo:_alDataUrl});
   }else{
-    al.push({id:'al'+Date.now(),name,logo:_alDataUrl});
+    const newAl={id:'al'+Date.now(),name,logo:_alDataUrl};
+    al.push(newAl);
+    lsSet('sanayah_airlines',al);
+    await apiAddAirline(newAl);
   }
-  lsSet('sanayah_airlines',al);
   closeAirlineModal();loadAirlines();showToast(_editAlId?'Airline updated':'Airline added');
 };
 window.deleteAirline=function(id){
-  window._delCb=function(){const al=lsGet('sanayah_airlines',[]).filter(a=>a.id!==id);lsSet('sanayah_airlines',al);loadAirlines();showToast('Airline deleted');};
+  window._delCb=async function(){const al=lsGet('sanayah_airlines',[]).filter(a=>a.id!==id);lsSet('sanayah_airlines',al);loadAirlines();showToast('Airline deleted');await apiDeleteAirline(id);};
   g('deleteModalMsg').textContent='Delete this airline?';
   g('deleteModal').classList.add('open');
 };
