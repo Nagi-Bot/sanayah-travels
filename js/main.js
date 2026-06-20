@@ -542,9 +542,9 @@ function initDynamicContent() {
   var ptclNum = '92 21 34832373';
   document.querySelectorAll('[data-content="ptcl"]').forEach(function(el) { el.textContent = ptclNum; });
   document.querySelectorAll('a[href^="tel:"]').forEach(function(a) {
-    if (a.textContent.indexOf('PTCL')>=0 || a.textContent.indexOf('ptcl')>=0) {
+    if (a.getAttribute('data-content') === 'ptcl' || a.textContent.indexOf('PTCL')>=0 || a.textContent.indexOf('ptcl')>=0) {
       a.href = 'tel:' + ptclNum.replace(/[^0-9+]/g,'');
-      a.textContent = a.textContent.replace(/\+?92[\s\d\-]+/g, ptclNum);
+      a.textContent = ptclNum;
     }
   });
   // topbar PTCL span
