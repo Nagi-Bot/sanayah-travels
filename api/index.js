@@ -29,12 +29,7 @@ function connectMongo() {
 connectMongo();
 
 // DB status middleware (MUST be before routes)
-app.use(async (req, res, next) => {
-  if (mongoPromise && !global.dbConnected && !dbError) {
-    try {
-      await Promise.race([mongoPromise, new Promise(r => setTimeout(r, 8000))]);
-    } catch(e) {}
-  }
+app.use((req, res, next) => {
   req.dbConnected = !!global.dbConnected;
   next();
 });
