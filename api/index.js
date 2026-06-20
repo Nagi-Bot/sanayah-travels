@@ -9,12 +9,6 @@ app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// DB status
-app.use((req, res, next) => {
-  req.dbConnected = global.dbConnected;
-  next();
-});
-
 // Import all route handlers
 app.use('/api/auth', require('../server/routes/auth'));
 app.use('/api/reviews', require('../server/routes/reviews'));
@@ -28,15 +22,13 @@ app.use('/api/settings', require('../server/routes/settings'));
 app.use('/api/pages', require('../server/routes/pages'));
 app.use('/api/chatbot', require('../server/routes/chatbot'));
 
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    timestamp: Date.now(),
-    db: !!global.dbConnected,
-    hasMongoUri: !!process.env.MONGODB_URI,
-    mongoPrefix: (process.env.MONGODB_URI || '').substring(0, 20)
-  });
+// DB status
+app.use((req, res, next) => {
+  req.dbConnected = global.dbConnected;
+  next();
 });
+
+let dbError = null;
 
 // Connect to MongoDB (async, won't block)
 if (process.env.MONGODB_URI) {
@@ -45,9 +37,19 @@ if (process.env.MONGODB_URI) {
     connectTimeoutMS: 5000
   })
     .then(() => { global.dbConnected = true; console.log('MongoDB connected'); })
-    .catch(err => { console.error('MongoDB error:', err.message); global.dbConnected = false; });
+    .catch(err => { global.dbConnected = false; dbError = err.message; console.error('MongoDB error:', err.message); });
 } else {
   console.log('MONGODB_URI not set');
 }
+
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: Date.now(),
+    db: !!global.dbConnected,
+    dbError: dbError,
+    hasMongoUri: !!process.env.MONGODB_URI
+  });
+});
 
 module.exports = app;
