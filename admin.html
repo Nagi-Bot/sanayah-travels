@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Admin Panel | Sanayah Travels</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"><style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--sky:#1E90D8;--sky-dark:#0C6BAD;--white:#fff;--off-white:#F4FAFF;--gray-300:#D1D1D1;--gray-500:#888;--gray-800:#222;--font-d:'Playfair Display',Georgia,serif;--font-b:'Inter',sans-serif}
+.admin-app{min-height:100vh;background:#0f172a;font-family:var(--font-b);color:#cbd5e1}
+.admin-login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f172a,#1e293b);padding:20px}
+.login-box{background:#1e293b;border-radius:16px;padding:44px 36px;width:100%;max-width:400px;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 64px rgba(0,0,0,.4)}
+.login-box h2{font-family:var(--font-d);color:#fff;font-size:1.8rem;margin-bottom:4px}
+.login-box>p{color:#94a3b8;font-size:.88rem;margin-bottom:28px}
+.admin-field label{display:block;color:#cbd5e1;font-size:.8rem;font-weight:600;margin-bottom:6px}
+.admin-field input{width:100%;padding:11px 14px;border:2px solid #334155;border-radius:8px;background:#0f172a;color:#fff;font-size:.9rem;outline:none;transition:border-color .2s;margin-bottom:16px}
+.admin-field input:focus{border-color:var(--sky)}
+.login-btn{width:100%;background:var(--sky);color:#fff;border:none;padding:13px;border-radius:8px;font-weight:700;font-size:.92rem;cursor:pointer;transition:background .2s}
+.login-btn:hover{background:var(--sky-dark)}
+.login-error{color:#f87171;font-size:.83rem;margin-top:10px;display:none}
+.admin-dash{display:none}
+.admin-dash.active{display:block!important}
+.admin-topbar{background:#1e293b;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:100}
+.admin-topbar h1{color:#fff;font-family:var(--font-d);font-size:1.3rem}
+.admin-badge{background:var(--sky);color:#fff;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:1px;margin-left:8px}
+.admin-topbar-btns{display:flex;gap:10px}
+.admin-btn-blue{background:#1e3a5f;color:#60a5fa;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600}
+.admin-btn-logout{background:#334155;color:#94a3b8;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600}
+.admin-btn-logout:hover{background:#ef4444;color:#fff}
+.admin-tabs{background:#1e293b;display:flex;gap:2px;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.06);overflow-x:auto}
+.admin-tab{padding:13px 16px;color:#64748b;font-size:.82rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap}
+.admin-tab.active{color:#fff;border-bottom-color:var(--sky)}
+.admin-content{padding:24px;max-width:1200px;margin:0 auto}
+.admin-section{display:none}
+.admin-section.active{display:block}
+.admin-stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:28px}
+.astat{background:#1e293b;border-radius:10px;padding:20px;border:1px solid rgba(255,255,255,.06)}
+.astat-icon{width:36px;height:36px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.07);border-radius:8px}
+.astat-icon svg{width:18px;height:18px;stroke:var(--sky);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.astat-val{font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#fff}
+.astat-lbl{color:#64748b;font-size:.78rem;margin-top:2px}
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.sec-header h2{color:#fff;font-family:var(--font-d);font-size:1.4rem}
+.add-btn{background:var(--sky);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-weight:700;font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:6px}
+.add-btn:hover{background:var(--sky-dark)}
+.admin-table-wrap{background:#1e293b;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06);overflow-x:auto}
+.admin-table{width:100%;border-collapse:collapse;min-width:700px}
+.admin-table th{background:#0f172a;color:#64748b;font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:12px 16px;text-align:left}
+.admin-table td{padding:14px 16px;border-top:1px solid rgba(255,255,255,.04);color:#cbd5e1;font-size:.85rem;vertical-align:middle}
+.admin-table tr:hover td{background:rgba(255,255,255,.02)}
+.tbl-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#334155;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+#airlineList img{max-width:100%;max-height:64px;width:auto;height:auto;object-fit:contain;border-radius:6px}
+.tbl-thumb img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.tbl-name{color:#fff;font-weight:600}
+.tbl-actions{display:flex;gap:6px}
+.tbl-btn{border:none;padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s}
+.tbl-btn.edit{background:rgba(59,130,246,.2);color:#60a5fa}
+.tbl-btn.edit:hover{background:rgba(59,130,246,.4)}
+.tbl-btn.del{background:rgba(239,68,68,.15);color:#f87171}
+.tbl-btn.del:hover{background:rgba(239,68,68,.3)}
+.tbl-btn.approve{background:rgba(34,197,94,.2);color:#4ade80}
+.tbl-btn.approve:hover{background:rgba(34,197,94,.35)}
+.tbl-btn.reject{background:rgba(251,191,36,.15);color:#fbbf24}
+.tbl-btn.reject:hover{background:rgba(251,191,36,.3)}
+.rev-status{display:inline-block;padding:3px 10px;border-radius:100px;font-size:.68rem;font-weight:700}
+.rev-status.pending{background:rgba(251,191,36,.15);color:#fbbf24}
+.rev-status.approved{background:rgba(34,197,94,.2);color:#4ade80}
+.rev-status.rejected{background:rgba(239,68,68,.15);color:#f87171}
+.settings-card{background:#1e293b;border-radius:10px;padding:24px;border:1px solid rgba(255,255,255,.06);margin-bottom:16px}
+.settings-card h3{color:#fff;font-size:.95rem;font-weight:700;margin-bottom:4px}
+.settings-card>p{color:#64748b;font-size:.82rem;margin-bottom:16px;line-height:1.5}
+.settings-row{display:flex;gap:10px;align-items:center}
+.settings-input{flex:1;padding:10px 13px;border:2px solid #334155;border-radius:8px;background:#0f172a;color:#fff;font-size:.88rem;outline:none;font-family:var(--font-b)}
+.settings-input:focus{border-color:var(--sky)}
+textarea.settings-input{resize:vertical;min-height:60px}
+.settings-save{background:var(--sky);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:.82rem}
+.settings-save:hover{background:var(--sky-dark)}
+.m-label{display:block;color:#94a3b8;font-size:.78rem;font-weight:600;margin:14px 0 6px}
+.m-input{width:100%;padding:10px 13px;border:2px solid #334155;border-radius:8px;background:#0f172a;color:#fff;font-size:.88rem;outline:none;transition:border-color .2s;font-family:var(--font-b)}
+.m-input:focus{border-color:var(--sky)}
+textarea.m-input{min-height:75px;resize:vertical}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9998;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:#1e293b;border-radius:14px;padding:32px;width:100%;max-width:580px;max-height:92vh;overflow-y:auto;border:1px solid rgba(255,255,255,.1);box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.modal h2{color:#fff;font-family:var(--font-d);font-size:1.4rem;margin-bottom:20px}
+.modal-btns{display:flex;gap:10px;margin-top:24px}
+.modal-save{flex:1;background:var(--sky);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:.88rem;cursor:pointer}
+.modal-save:hover{background:var(--sky-dark)}
+.modal-cancel{background:#334155;color:#94a3b8;border:none;padding:12px 20px;border-radius:8px;font-weight:700;cursor:pointer}
+.modal-cancel:hover{background:#475569;color:#fff}
+.img-upload-area{border:2px dashed #334155;border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;overflow:hidden}
+.img-upload-area:hover{border-color:var(--sky)}
+.img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-upload-area p{color:#64748b;font-size:.85rem;margin-top:8px}
+.img-preview{width:100%;max-height:160px;object-fit:cover;border-radius:8px;display:none;margin-top:10px}
+.logo-preview-wrap{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.logo-preview-box{width:80px;height:80px;border-radius:10px;background:#334155;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #475569}
+.logo-preview-box img{width:100%;height:100%;object-fit:contain}
+.admin-toast{position:fixed;bottom:32px;right:32px;padding:14px 28px;border-radius:12px;font-size:14px;font-weight:600;z-index:10000;transform:translateY(80px);opacity:0;transition:all .4s;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.admin-toast.show{transform:translateY(0);opacity:1}
+.admin-toast.success{background:#d4edda;color:#155724}
+.admin-toast.error{background:#f8d7da;color:#721c24}
+.admin-toast.info{background:var(--sky-dark);color:#fff}
+.confirm-modal{max-width:380px;text-align:center}
+.confirm-modal>p{color:#94a3b8;margin:8px 0 22px;line-height:1.6}
+.confirm-del{background:#dc2626;color:#fff;border:none;padding:11px 26px;border-radius:8px;font-weight:700;cursor:pointer}
+.confirm-del:hover{background:#b91c1c}
+.social-preview-icons{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.soc-icon-box{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;opacity:.3}
+.soc-icon-box.active{opacity:1}
+.soc-icon-box svg{width:17px;height:17px;fill:#fff}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.blog-card{background:#1e293b;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.blog-card-body{padding:16px 18px}
+.blog-card-title{color:#fff;font-weight:600;font-size:.92rem;margin-bottom:6px}
+.blog-card-date{color:#64748b;font-size:.75rem}
+.blog-card-excerpt{color:#94a3b8;font-size:.82rem;line-height:1.5;margin-top:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.faq-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;margin-bottom:10px}
+.faq-item .faq-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.faq-item .faq-header span{color:#94a3b8;font-size:.78rem;font-weight:600}
+.qa-row{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.03);border-radius:8px;padding:12px 14px;margin-bottom:8px}
+.qa-row .qa-key{background:#0f172a;color:#f1f5f9;padding:2px 10px;border-radius:4px;font-size:.8rem;white-space:nowrap}
+.qa-row .qa-reply{color:#94a3b8;font-size:.82rem;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qa-row .qa-actions{display:flex;gap:6px;flex-shrink:0}
+@media(max-width:768px){
+  .admin-topbar{flex-direction:column;gap:10px;align-items:flex-start}
+  .admin-topbar-btns{width:100%;display:flex;gap:8px}
+  .admin-topbar-btns button{flex:1;text-align:center}
+  .admin-tabs{padding:0 12px}
+  .admin-tab{padding:11px 12px;font-size:.78rem}
+  .admin-content{padding:12px}
+  .admin-stats-row{grid-template-columns:repeat(2,1fr);gap:10px}
+  .astat{padding:14px}
+  .sec-header{flex-direction:column;align-items:flex-start}
+  .add-btn{width:100%;justify-content:center}
+  .settings-row{flex-direction:column;gap:8px}
+  .settings-input{width:100%!important}
+  .settings-save{width:100%;text-align:center}
+  .modal{padding:24px 20px}
+  .modal-btns{flex-direction:column}
+  .modal-save,.modal-cancel{width:100%;text-align:center}
+  .login-box{padding:28px 20px}
+  .admin-table-wrap{overflow-x:auto}
+}
+</style></head><body><div class="admin-app">
+<div id="adminLogin" class="admin-login">
+  <div class="login-box">
+    <h2><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Admin Panel</h2>
+    <p>Sanayah Travels &amp; Tourism — G.L # 5134</p>
+    <div class="admin-field"><label>Username</label><input type="text" id="loginUser" placeholder="admin" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+    <div class="admin-field"><label>Password</label><input type="password" id="loginPass" placeholder="password" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+    <button class="login-btn" onclick="doAdminLogin()">Login to Admin Panel</button>
+    <div class="login-error" id="loginErr">Invalid username or password</div>
+  </div>
+</div>
+
+<div class="admin-dash" id="adminDash">
+  <div class="admin-topbar">
+    <div style="display:flex;align-items:center;gap:8px">
+      <h1>Admin Panel</h1><span class="admin-badge">LIVE</span>
+    </div>
+    <div class="admin-topbar-btns">
+      <button class="admin-btn-blue" onclick="window.location.href='index.html'">View Site</button>
+      <button class="admin-btn-logout" onclick="doAdminLogout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="admin-tabs">
+    <div class="admin-tab active" onclick="switchAdminTab('dashboard')">Dashboard</div>
+    <div class="admin-tab" onclick="switchAdminTab('reviews')">Reviews</div>
+    <div class="admin-tab" onclick="switchAdminTab('airlines')">Airlines</div>
+    <div class="admin-tab" onclick="switchAdminTab('pages')">Pages</div>
+    <div class="admin-tab" onclick="switchAdminTab('branding')">Branding</div>
+    <div class="admin-tab" onclick="switchAdminTab('blog')">Blog</div>
+    <div class="admin-tab" onclick="switchAdminTab('faq')">FAQ</div>
+    <div class="admin-tab" onclick="switchAdminTab('chatbot')">Chatbot</div>
+    <div class="admin-tab" onclick="switchAdminTab('visitors')">Visitors</div>
+    <div class="admin-tab" onclick="switchAdminTab('settings')">Settings</div>
+  </div>
+
+  <div class="admin-content">
+    <!-- DASHBOARD -->
+    <div class="admin-section active" id="tab-dashboard">
+      <div class="sec-header"><h2>Dashboard Overview</h2></div>
+      <div class="admin-stats-row" id="dashStats"></div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="admin-section" id="tab-reviews">
+      <div class="sec-header"><h2>Customer Reviews</h2><span style="color:#64748b;font-size:.82rem">Approve or reject reviews</span></div>
+      <div class="admin-stats-row" id="reviewStats"></div>
+      <div class="admin-table-wrap">
+        <table class="admin-table"><thead><tr><th>#</th><th>Customer</th><th>Review</th><th>Stars</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="reviewsTableBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- AIRLINES -->
+    <div class="admin-section" id="tab-airlines">
+      <div class="sec-header"><h2>Airline Logos</h2><button class="add-btn" onclick="openAddAirline()">+ Add Airline</button></div>
+      <div id="airlineList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px"></div>
+    </div>
+
+    <!-- PAGES -->
+    <div class="admin-section" id="tab-pages">
+      <h2 style="color:#fff;font-family:var(--font-d);font-size:1.4rem;margin-bottom:20px">Page Content Editor</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px" id="pageTabs"></div>
+      <div id="pageEditor"></div>
+      <div class="settings-card" id="aboutContentEditor" style="margin-top:16px">
+        <h3>About Section Content</h3>
+        <p>Content displayed on the About Us page.</p>
+        <label class="m-label">About Title</label><input class="settings-input" id="aboutTitle" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">Paragraph 1</label><textarea class="settings-input" id="aboutP1" style="width:100%;min-height:60px;margin-bottom:8px"></textarea>
+        <label class="m-label">Paragraph 2</label><textarea class="settings-input" id="aboutP2" style="width:100%;min-height:60px;margin-bottom:8px"></textarea>
+        <label class="m-label">Paragraph 3</label><textarea class="settings-input" id="aboutP3" style="width:100%;min-height:60px;margin-bottom:8px"></textarea>
+        <label class="m-label">About Image</label>
+        <div class="img-upload-area" style="max-width:260px;margin-bottom:12px"><input type="file" accept="image/*" onchange="handleAboutImg(this)"/><p>Upload about image</p><img class="img-preview" id="aboutImgPreview"/></div>
+        <button class="settings-save" onclick="saveAboutContent()">Save About Section</button>
+      </div>
+    </div>
+
+    <!-- BRANDING -->
+    <div class="admin-section" id="tab-branding">
+      <h2 style="color:#fff;font-family:var(--font-d);font-size:1.4rem;margin-bottom:20px">Branding &amp; Appearance</h2>
+      <div class="settings-card">
+        <h3>Site Logo &amp; Name</h3>
+        <p>Upload your logo and set brand name.</p>
+        <div class="logo-preview-wrap">
+          <div class="logo-preview-box" id="logoPreviewBox"><span style="color:#64748b;font-size:.75rem">No logo</span></div>
+          <div><div class="img-upload-area" style="max-width:260px;padding:16px"><input type="file" accept="image/*" onchange="adminUploadLogo(this)"/><p>Click to upload logo</p></div></div>
+        </div>
+        <div class="settings-row"><input class="settings-input" id="brandSiteName" placeholder="Sanayah Travels"/><button class="settings-save" onclick="saveBrandSiteName()">Save</button></div>
+        <button onclick="adminRemoveLogo()" style="margin-top:10px;background:transparent;color:#f87171;border:1px solid rgba(239,68,68,.3);padding:7px 16px;border-radius:8px;cursor:pointer;font-size:.8rem">Remove Logo</button>
+      </div>
+      <div class="settings-card">
+        <h3>IATA Logo</h3>
+        <p>IATA accreditation logo displayed in the hero section.</p>
+        <div class="logo-preview-wrap">
+          <div class="logo-preview-box" id="iataPreviewBox"><span style="color:#64748b;font-size:.75rem">No logo</span></div>
+          <div><div class="img-upload-area" style="max-width:260px;padding:16px"><input type="file" accept="image/*" onchange="adminUploadIata(this)"/><p>Click to upload IATA logo</p></div></div>
+        </div>
+        <button onclick="adminRemoveIata()" style="background:transparent;color:#f87171;border:1px solid rgba(239,68,68,.3);padding:7px 16px;border-radius:8px;cursor:pointer;font-size:.8rem">Remove IATA Logo</button>
+      </div>
+      <div class="settings-card">
+        <h3>Accent Color</h3>
+        <p>Primary brand color used across the site (default: #1E90D8).</p>
+        <div class="settings-row"><input type="color" class="settings-input" id="brandColor" style="width:60px;height:44px;padding:3px;flex:0 0 auto"/><input class="settings-input" id="brandColorHex" placeholder="#1E90D8" style="font-family:monospace"/><button class="settings-save" onclick="saveBrandColor()">Save Color</button></div>
+      </div>
+      <div class="settings-card">
+        <h3>Social Media Links</h3>
+        <p>Add your social URLs. Leave blank to hide that platform.</p>
+        <label class="m-label">Facebook</label><input class="settings-input" id="socFb" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">Instagram</label><input class="settings-input" id="socIg" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">Twitter / X</label><input class="settings-input" id="socTw" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">LinkedIn</label><input class="settings-input" id="socLi" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">YouTube</label><input class="settings-input" id="socYt" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">TikTok</label><input class="settings-input" id="socTk" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">WhatsApp Number (digits only)</label><input class="settings-input" id="socWa" style="width:100%;margin-bottom:12px" placeholder="923002816459"/>
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px 16px;margin-bottom:12px">
+          <p style="color:#94a3b8;font-size:.8rem">Preview:</p>
+          <div class="social-preview-icons" id="socialPreview"></div>
+        </div>
+        <button class="settings-save" onclick="saveBrandSocial()">Save Social Links</button>
+      </div>
+      <div class="settings-card">
+        <h3>Announcement Bar</h3>
+        <p>Text shown in the scrolling announcement bar at top of site.</p>
+        <div class="settings-row"><input class="settings-input" id="brandAnnounce" placeholder="Umrah Packages 2026 | International Tours | Visa Assistance"/><button class="settings-save" onclick="saveBrandAnnounce()">Save</button></div>
+      </div>
+      <div class="settings-card">
+        <h3>Hero Section</h3>
+        <p>Homepage hero banner text.</p>
+        <label class="m-label">Hero Title</label><input class="settings-input" id="brandHeroTitle" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">Hero Subtitle</label><textarea class="settings-input" id="brandHeroSub" style="width:100%;min-height:60px;margin-bottom:12px"></textarea>
+        <button class="settings-save" onclick="saveBrandHero()">Save Hero</button>
+      </div>
+    </div>
+
+    <!-- BLOG -->
+    <div class="admin-section" id="tab-blog">
+      <div class="sec-header"><h2>Blog Posts</h2><button class="add-btn" onclick="openBlogModal()">+ New Post</button></div>
+      <div id="blogGrid" class="blog-grid"></div>
+      <div class="settings-card" style="margin-top:20px">
+        <h3>Blog Section Settings</h3>
+        <label class="m-label">Section Label</label><input class="settings-input" id="blogSecLabel" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">Section Title</label><input class="settings-input" id="blogSecTitle" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">Section Description</label><textarea class="settings-input" id="blogSecDesc" style="width:100%;min-height:60px;margin-bottom:12px"></textarea>
+        <button class="settings-save" onclick="saveBlogSettings()">Save Blog Settings</button>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="admin-section" id="tab-faq">
+      <div class="sec-header"><h2>FAQ Management</h2><button class="add-btn" onclick="addFaqItem()">+ Add FAQ</button></div>
+      <div id="faqEditorList"></div>
+      <button class="settings-save" onclick="saveFaqAll()">Save All FAQ</button>
+    </div>
+
+    <!-- VISITORS -->
+    <div class="admin-section" id="tab-visitors">
+      <div class="sec-header"><h2>Recent Visitors</h2><button class="add-btn" onclick="loadVisitors()" style="font-size:.75rem">Refresh</button></div>
+      <p style="color:#64748b;font-size:.82rem;margin-bottom:12px">Last 50 visitors tracked via IP geolocation.</p>
+      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>#</th><th>IP Address</th><th>Country</th><th>City</th><th>Region</th><th>Page</th><th>Time</th></tr></thead><tbody id="visitorsTableBody"></tbody></table></div>
+    </div>
+
+    <!-- CHATBOT -->
+    <div class="admin-section" id="tab-chatbot">
+      <div class="sec-header"><h2>Chatbot Settings</h2></div>
+      <div class="settings-card">
+        <h3>AI Configuration</h3>
+        <p>Connect a free AI API. Get key from <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--sky)">Google Gemini</a> or <a href="https://deepseek.com" target="_blank" style="color:var(--sky)">DeepSeek</a>.</p>
+        <label class="m-label">Provider</label><select class="settings-input" id="chatProvider" style="width:100%;margin-bottom:8px"><option value="">None</option><option value="gemini">Gemini</option><option value="deepseek">DeepSeek</option></select>
+        <label class="m-label">API Key</label><input class="settings-input" id="chatApiKey" type="password" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">System Prompt</label><textarea class="settings-input" id="chatSystemPrompt" style="width:100%;min-height:60px;margin-bottom:12px">You are a helpful assistant for Sanayah Travels & Tourism. Answer questions about Umrah packages, flights, visas, tours, etc. Be friendly and concise.</textarea>
+        <button class="settings-save" onclick="saveChatConfig()">Save AI Settings</button>
+      </div>
+      <div class="sec-header"><h2>Q&A Pairs</h2><button class="add-btn" onclick="openQaModal()">+ Add Q&A</button></div>
+      <p style="color:#64748b;font-size:.82rem;margin-bottom:12px">When a visitor's message matches a keyword below, the bot replies instantly without AI.</p>
+      <div id="qaList"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="admin-section" id="tab-settings">
+      <h2 style="color:#fff;font-family:var(--font-d);font-size:1.4rem;margin-bottom:20px">Settings</h2>
+      <div class="settings-card">
+        <h3>Change Password</h3>
+        <div class="settings-row"><input type="password" class="settings-input" id="newPass" placeholder="New password (min 4 chars)"/><button class="settings-save" onclick="changeAdminPass()">Save</button></div>
+      </div>
+      <div class="settings-card">
+        <h3>WhatsApp Number</h3>
+        <p>Number for floating WhatsApp button (digits only, no +).</p>
+        <div class="settings-row"><input class="settings-input" id="waNum" placeholder="923002816459"/><button class="settings-save" onclick="saveWaNum()">Save</button></div>
+      </div>
+      <div class="settings-card">
+        <h3>Contact Information</h3>
+        <p>Site-wide contact details.</p>
+        <label class="m-label">Email</label><input class="settings-input" id="setEmail" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">Address</label><input class="settings-input" id="setAddress" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">PTCL / Landline</label><input class="settings-input" id="setPtcl" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">Business Hours</label><input class="settings-input" id="setHours" style="width:100%;margin-bottom:12px"/>
+        <button class="settings-save" onclick="saveContactInfo()">Save Contact Info</button>
+      </div>
+      <div class="settings-card">
+        <h3>SEO Settings</h3>
+        <label class="m-label">Meta Title</label><input class="settings-input" id="seoTitle" style="width:100%;margin-bottom:8px"/>
+        <label class="m-label">Meta Description</label><textarea class="settings-input" id="seoDesc" style="width:100%;min-height:60px;margin-bottom:8px"></textarea>
+        <label class="m-label">Meta Keywords</label><input class="settings-input" id="seoKeywords" style="width:100%;margin-bottom:12px"/>
+        <button class="settings-save" onclick="saveSeo()">Save SEO</button>
+      </div>
+      <div class="settings-card">
+        <h3>Homepage Popup</h3>
+        <p>Show a popup when visitors land on the homepage. Works on all screen sizes.</p>
+        <label class="m-label">Enable Popup</label>
+        <select class="settings-input" id="popupEnabled" style="width:100%;margin-bottom:8px"><option value="1">Enabled</option><option value="0">Disabled</option></select>
+        <label class="m-label">Popup Text (HTML allowed)</label><textarea class="settings-input" id="popupText" style="width:100%;min-height:80px;margin-bottom:8px" placeholder="Enter popup message text here..."></textarea>
+        <label class="m-label">Popup Image</label>
+        <div class="img-upload-area" style="max-width:260px;margin-bottom:12px"><input type="file" accept="image/*" onchange="handlePopupImg(this)"/><p>Click to upload image (all sizes accepted)</p><img class="img-preview" id="popupImgPreview"/></div>
+        <button class="settings-save" onclick="savePopupSettings()">Save Popup Settings</button>
+        <button onclick="adminRemovePopupImg()" style="margin-left:8px;background:transparent;color:#f87171;border:1px solid rgba(239,68,68,.3);padding:7px 16px;border-radius:8px;cursor:pointer;font-size:.8rem">Remove Image</button>
+      </div>
+      <div class="settings-card">
+        <h3>Email Notifications</h3>
+        <p>Send contact form submissions to your email automatically. Uses <a href="https://www.emailjs.com" target="_blank" style="color:var(--sky)">EmailJS</a> (free, 200 emails/month).</p>
+        <label class="m-label">EmailJS Public Key</label><input class="settings-input" id="emailjsKey" style="width:100%;margin-bottom:8px" placeholder="Your EmailJS public key"/>
+        <label class="m-label">Service ID</label><input class="settings-input" id="emailjsService" style="width:100%;margin-bottom:8px" placeholder="e.g. service_xxxxxxx"/>
+        <label class="m-label">Template ID</label><input class="settings-input" id="emailjsTemplate" style="width:100%;margin-bottom:8px" placeholder="e.g. template_xxxxxxx"/>
+        <label class="m-label">Notification Email</label><input class="settings-input" id="emailjsRecipient" value="sanayahtravels@gmail.com" style="width:100%;margin-bottom:12px"/>
+        <button class="settings-save" onclick="saveEmailConfig()">Save Email Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="admin-toast" id="adminToast"></div>
+
+<!-- AIRLINE MODAL -->
+<div class="modal-overlay" id="airlineModal">
+  <div class="modal">
+    <h2 id="airlineModalTitle">Add Airline</h2>
+    <label class="m-label">Airline Name</label><input class="m-input" id="alName" placeholder="e.g. Emirates"/>
+    <label class="m-label">Logo Image</label>
+    <div class="img-upload-area"><input type="file" accept="image/*" onchange="handleAirlineImg(this)"/><p>Click to upload logo</p><img class="img-preview" id="alPreview"/></div>
+    <div class="modal-btns"><button class="modal-cancel" onclick="closeAirlineModal()">Cancel</button><button class="modal-save" onclick="saveAirline()">Save</button></div>
+  </div>
+</div>
+
+<!-- BLOG MODAL -->
+<div class="modal-overlay" id="blogModal">
+  <div class="modal">
+    <h2 id="blogModalTitle">New Blog Post</h2>
+    <label class="m-label">Title</label><input class="m-input" id="bpTitle" placeholder="Post title"/>
+    <label class="m-label">Content</label><textarea class="m-input" id="bpContent" style="min-height:150px" placeholder="Write your post..."></textarea>
+    <div class="modal-btns"><button class="modal-cancel" onclick="closeBlogModal()">Cancel</button><button class="modal-save" onclick="saveBlogPost()">Save</button></div>
+  </div>
+</div>
+
+<!-- QA MODAL -->
+<div class="modal-overlay" id="qaModal">
+  <div class="modal">
+    <h2 id="qaModalTitle">Add Q&A Pair</h2>
+    <label class="m-label">Keyword / Trigger</label><input class="m-input" id="qaKeyword" placeholder="e.g. umrah"/>
+    <label class="m-label">Bot Reply</label><textarea class="m-input" id="qaReply" style="min-height:100px" placeholder="Reply..."></textarea>
+    <div class="modal-btns"><button class="modal-cancel" onclick="closeQaModal()">Cancel</button><button class="modal-save" onclick="saveQaPair()">Save</button></div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal confirm-modal">
+    <h2>Delete?</h2>
+    <p id="deleteModalMsg">Are you sure?</p>
+    <div style="display:flex;gap:10px;justify-content:center"><button class="modal-cancel" onclick="closeDeleteModal()">Cancel</button><button class="confirm-del" onclick="confirmDeleteAction()">Yes, Delete</button></div>
+  </div>
+</div>
+</div>
+<script src="js/api.js"></script>
+<script src="js/admin.js"></script></body></html>
