@@ -1,4 +1,3 @@
-// Vercel serverless entry point
-module.exports = function(req, res) {
-  res.status(200).json({ status: 'ok', message: 'API function is working', path: req.url });
-};
+// Vercel serverless entry point - re-exports the Express app from server.js
+const app = require('../server/server');
+module.exports = app;
